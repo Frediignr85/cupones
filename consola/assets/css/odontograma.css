@@ -1,0 +1,254 @@
+.diente {
+    position: static;
+    width: 0px;
+    height: auto;
+    margin-left: 50px;
+    display: inline-block;
+}
+
+.cuadro {
+    background-color: #FFFFFF;
+    border: 1px solid #7F7F7F;
+    position: relative;
+    width: 25px;
+    height: 15px;
+    left: 0px;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    border-radius: 100%;
+}
+
+.cuadro:hover {
+    /*background: rgba(117, 198, 243, 0.4);*/
+    
+    cursor: pointer;
+}
+
+.izquierdo {
+    top: 1px !important;
+    left: -17px !important;
+    -webkit-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    transform: rotate(270deg);
+}
+
+.debajo {
+    top: 2px !important;
+    left: 0px !important;
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.derecha {
+    top: -29px !important;
+    left: 16px !important;
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+.centro {
+    background: #F3F3F3;
+    border: 1px solid #7F7F7F;
+    width: 25px;
+    height: 25px;
+    top: -49px;
+    left: 0px;
+    position: relative;
+    border-radius: 100%;
+}
+
+.centro:hover {
+    border: 1px solid rgba(117, 198, 243, 0.4);
+    /*background-color: rgba(117, 198, 243, 0.4);*/
+    
+    cursor: pointer;
+}
+
+#tlr {
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+#tr {
+    border-right: 1px solid black;
+}
+#tll {
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+}
+#tl {
+    border-left: 1px solid black;
+}
+
+#blr {
+    border-right: 1px solid black;
+}
+#br {
+    border-right: 1px solid black;
+}
+#bl {
+    border-left: 1px solid black;
+}
+#bll {
+    border-left: 1px solid black;
+}
+
+.click-delete {
+    background-color: #747F7D !important;
+}
+
+.kill {
+    background-color: green;
+}
+
+.diente-leche {
+    position: relative;
+    width: 0px;
+    height: auto;
+    margin-left: 50px;
+    display: inline-block;
+}
+
+.cuadro-leche {
+    border: 1px solid #7F7F7F;
+    position: relative;
+    width: 13px;
+    height: 13px;
+    left: 0px;
+    -webkit-border-radius: 100%;
+    -moz-border-radius:100%;
+    border-radius:100%;
+}
+
+.cuadro-leche:hover {
+    /*background: rgba(117, 198, 243, 0.4);*/
+    
+    cursor: pointer;
+}
+
+.izquierdo-leche {
+    top: -4px !important;
+    left: -8px !important;
+    -webkit-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    transform: rotate(270deg);
+}
+
+.top-leche {
+    width: 15px;
+    left: 2px;
+}
+
+.debajo-leche {
+    width: 15px;
+    top: -8px !important;
+    left: 2px !important;
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.derecha-leche {
+    top: -30px !important;
+    left: 13px !important;
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+.centro-leche {
+    background: #F3F3F3;
+    border: 1px solid #7F7F7F;
+    width: 15px;
+    height: 13px;
+    top: -43px;
+    left: 2px;
+    position: relative;
+    border-radius: 100%;
+}
+
+.centro-leche:hover {
+    border: 1px solid rgba(117, 198, 243, 0.4);
+    /*background-color: rgba(117, 198, 243, 0.4);*/
+    
+    cursor: pointer;
+}
+.btn-black{
+    color: black;
+}
+.btn-green{
+    color: green;
+}
+.btn-lgreen{
+    color: #59F233;
+}
+.btn-blue{
+    color: blue;
+}
+.btn-brown{
+    color:#993300;
+}
+.btn-red{
+    color:red;
+}
+.btn-yellow{
+    color: #FFCC00;
+}
+.btn-purple{
+    color:purple;
+}
+.btn-orange{
+    color:orange;
+}
+.btn-magenta{
+    color:#91C2FF;
+}
+.btn-cyan{
+    color: gray;
+}
+.click-black {
+    background-color: black !important;
+}
+.click-green {
+    background-color: green !important;
+}
+.click-lgreen {
+    background-color: #59F233 !important;
+}
+.click-blue {
+    background-color: blue !important;
+}
+.click-brown {
+    background-color: #993300 !important;
+}
+.click-red {
+    background-color: red !important;
+}
+.click-yellow {
+    background-color: #FFCC00 !important;
+}
+.click-purple {
+    background-color: purple !important;
+}
+.click-orange {
+    background-color: orange !important;
+}
+.click-magenta {
+    background-color: #91C2FF !important;
+}
+.click-cyan {
+    background-color: gray !important;
+}

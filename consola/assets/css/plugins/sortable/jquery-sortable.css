@@ -1,0 +1,15 @@
+.sorted_table tr{
+cursor: pointer;
+}
+ tr.placeholder{
+display: block;
+background: red;
+position: relative;
+margin: 0;
+padding: 0;
+border: none;
+}
+
+.DeleteTour{ cursor: pointer; color: blue; }
+.DeleteTourOnsite{ cursor: pointer; color: blue; }
+.DeleteTourExp{ cursor: pointer; color: blue; }

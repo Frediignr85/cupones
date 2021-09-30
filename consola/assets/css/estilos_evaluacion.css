@@ -1,0 +1,10 @@
+.container-partes {
+    -webkit-box-shadow: -1px -1px 15px 0px rgba(50, 50, 50, 0.68);
+    -moz-box-shadow: -1px -1px 15px 0px rgba(50, 50, 50, 0.68);
+    box-shadow: -1px -1px 15px 0px rgba(50, 50, 50, 0.68);
+    padding: 15px;
+}
+
+#primer_div {
+    margin: 20px;
+}

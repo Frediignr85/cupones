@@ -1,0 +1,41 @@
+﻿/*
+div.spinedit { display: inline-block; position: relative; }
+input[type="text"].spinedit { width: 35px; }
+div.spinedit .icon-chevron-up,
+div.spinedit .icon-chevron-down { position: relative; cursor: pointer; width: 12px; left: 8px; }
+div.spinedit .icon-chevron-up { top: -12px; }
+div.spinedit .icon-chevron-down { top: 3px; left: -4px; }
+.form-search div.spinedit, .form-inline div.spinedit, .form-horizontal div.spinedit { top: 5px; }
+*/
+ .input-group span.input-group-btn,.input-group input,.input-group button{
+        display: block;
+        width: 50%;
+        border-radius: 0;
+        margin: 0;
+    }
+    .input-group {
+    
+        position: relative;   
+    }
+    .input-group span.data-up{
+        position: absolute;
+        top: 0;
+    }
+    .input-group span.data-dwn{
+        position: absolute;
+        bottom: 0;
+    }
+    .form-control.text-center {
+        margin: 1px 0;
+    }
+    .input-group-btn:last-child>.btn, .input-group-btn:last-child>.btn-group{
+        margin-left:0;
+    }
+.input-xs {
+    height: 25px;
+    width: 30px;
+    padding: 1px 1px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
