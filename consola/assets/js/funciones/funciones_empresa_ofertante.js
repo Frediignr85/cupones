@@ -17,7 +17,6 @@ $(document).ready(function() {
             } else {
                 event.preventDefault();
             }
-
         }
     });
     $('#formulario').validate({
