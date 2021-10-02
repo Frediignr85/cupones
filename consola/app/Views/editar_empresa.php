@@ -45,7 +45,7 @@
                             <div class="form-group col-lg-6">
                                 <label>Correo de Contacto:</label>
                                 <input type="email" placeholder="Ingrese el correo de contacto" class="form-control"
-                                    id="correo" name="correo" value="<?php echo $correo; ?>" required>
+                                    id="correo" name="correo" value="<?php echo $correo; ?>" required readonly>
                             </div>
                             <div class="form-group col-lg-6">
                                 <label>Direccion:</label>

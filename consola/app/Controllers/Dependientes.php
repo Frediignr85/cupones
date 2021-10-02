@@ -25,7 +25,7 @@ class Dependientes extends BaseController
             $modelo1 = $this->ElModelo1;
             $uri = $_SERVER['SCRIPT_NAME'];
             $admin = $session->get('admin');
-            $links = $modelo->verificar_permiso($session->get('id_usuario'),$uri);
+            $links = $modelo->verificar_permiso($session->get('id_usuario'),"dependientes/");
 
             $query = $modelo->datos_empresa(1);
             $datos['result'] = $query->getResultArray();
@@ -47,7 +47,7 @@ class Dependientes extends BaseController
                 $datos1['links'] .= '<link href="'.base_url("").'/assets/css/animate.css" rel="stylesheet">';
                 $datos1['links'] .= '<link href="'.base_url("").'/assets/css/style.css" rel="stylesheet">';
 
-                $btn_add = $modelo->verificar_permiso($session->get('id_usuario'),"agregar_dependiente");
+                $btn_add = $modelo->verificar_permiso($session->get('id_usuario'),"dependientes/agregar_dependiente");
                 $datos2['btn_add'] = "";
                 if($btn_add != "NOT" || $admin == "1"){
                     $datos2['btn_add'] = "<a href='".base_url("")."/dependientes/agregar_dependiente"."' class='btn btn-primary' role='button'><i class='fa fa-plus icon-large'></i> Agregar Dependientes</a>";
@@ -55,16 +55,16 @@ class Dependientes extends BaseController
                 $menu = $modelo1->menu($session->get('id_usuario'),$session->get('admin'));
                 $datos['menu'] = $menu;
                 $datos3['url'] = '<script src="'.base_url("").'/assets/js/funciones/funciones_dependiente.js" ></script>';
-                $query = $modelo->dependientes();
+                $query = $modelo->dependientes($session->get('admin'),$session->get('id_empresa'));
                 $datos2['result'] = $query->getResultArray();
 
                 $datos2['permiso_editar'] = 0;
-                $links2 = $modelo->verificar_permiso($session->get('id_usuario'),"editar_dependiente");
+                $links2 = $modelo->verificar_permiso($session->get('id_usuario'),"dependientes/editar_dependiente");
                 if ($links2!='NOT' || $admin=='1' ){
                     $datos2['permiso_editar'] = 1;
                 }
                 $datos2['permiso_borrar'] = 0;
-                $links2 = $modelo->verificar_permiso($session->get('id_usuario'),"borrar_dependiente");
+                $links2 = $modelo->verificar_permiso($session->get('id_usuario'),"dependientes/borrar_dependiente");
                 if ($links2!='NOT' || $admin=='1' ){
                     $datos2['permiso_borrar'] = 1;
                 }
@@ -92,7 +92,7 @@ class Dependientes extends BaseController
             $modelo1 = $this->ElModelo1;
             $uri = $_SERVER['SCRIPT_NAME'];
             $admin = $session->get('admin');
-            $links = $modelo->verificar_permiso($session->get('id_usuario'),$uri);
+            $links = $modelo->verificar_permiso($session->get('id_usuario'),"dependientes/agregar_dependiente");
             $query = $modelo->datos_empresa(1);
             $datos['result'] = $query->getResultArray();
             if ($links!='NOT' || $admin=='1' ){
@@ -166,7 +166,7 @@ class Dependientes extends BaseController
             $modelo1 = $this->ElModelo1;
             $uri = $_SERVER['SCRIPT_NAME'];
             $admin = $session->get('admin');
-            $links = $modelo->verificar_permiso($session->get('id_usuario'),$uri);
+            $links = $modelo->verificar_permiso($session->get('id_usuario'),"dependientes/editar_dependiente");
             $query = $modelo->datos_empresa(1);
             $datos['result'] = $query->getResultArray();
             if ($links!='NOT' || $admin=='1' ){
@@ -245,7 +245,7 @@ class Dependientes extends BaseController
             $modelo = $this->ElModelo;
             $uri = $_SERVER['SCRIPT_NAME'];
             $admin = $session->get('admin');
-            $links = $modelo->verificar_permiso($session->get('id_usuario'),$uri);
+            $links = $modelo->verificar_permiso($session->get('id_usuario'),"dependientes/borrar_dependiente");
             $query = $modelo->datos_empresa(1);
             $datos['result'] = $query->getResultArray();
             if ($links!='NOT' || $admin=='1' ){

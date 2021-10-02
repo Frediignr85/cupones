@@ -196,3 +196,26 @@ $(".btn_revisar_resultados").click(function() {
     let id_evaluacion = $(this).attr('id');
     window.location = 'resultado_individual.php?id_evaluacion=' + id_evaluacion;
 });
+
+$("#btn_verificar_codigo").click(function() {
+    let codigo = $("#codigo_canje").val();
+    let base_url = $("#base_url").val();
+    var dataString = 'codigo=' + codigo;
+    $.ajax({
+        type: "POST",
+        url: base_url + "/ofertas/canjear_oferta",
+        data: dataString,
+        dataType: 'json',
+        success: function(datax) {
+            display_notify(datax.typeinfo, datax.msg);
+            if (datax.typeinfo == "Success") {
+                setInterval("reload1();", 1500);
+            }
+        }
+    });
+});
+
+function reload1() {
+    let base_url = $("#base_url").val();
+    location.href = base_url + '/dashboard';
+}

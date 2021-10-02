@@ -23,15 +23,7 @@ class ModeloRubro extends Model
     protected $skipValidation     = false;
 
     function verificar_permiso($id_user, $filename){
-        //metodo para obtener el nombre del file:
-        $nombre_archivo = $filename;
-        //verificamos si en la ruta nos han indicado el directorio en el que se encuentra
-        if ( strpos($filename, '/') !== FALSE ){
-            //de ser asi, lo eliminamos, y solamente nos quedamos con el nombre y su extension
-            $nombre_archivo_tmp = explode('/', $filename);
-            $nombre_archivo= array_pop($nombre_archivo_tmp );
-            $filename = $nombre_archivo;
-        }  
+          
         $sql1="SELECT tblmenu.id_menu, tblmenu.nombre as nombremenu, tblmenu.prioridad,
             tblmodulo.id_modulo,  tblmodulo.nombre as nombremodulo, tblmodulo.descripcion, tblmodulo.filename,
             tblusuario_modulo.id_usuario,tblUsuario.id_tipo_usuario as admin

@@ -25,7 +25,7 @@ class Ofertas_Descartadas extends BaseController
             $modelo1 = $this->ElModelo1;
             $uri = $_SERVER['SCRIPT_NAME'];
             $admin = $session->get('admin');
-            $links = $modelo->verificar_permiso($session->get('id_usuario'),$uri);
+            $links = $modelo->verificar_permiso($session->get('id_usuario'),"ofertas_descartadas/");
 
             $query = $modelo->datos_empresa(1);
             $datos['result'] = $query->getResultArray();
@@ -52,7 +52,7 @@ class Ofertas_Descartadas extends BaseController
                 /* ACA LE PASAMOS EL SCRIPT QUE ADMINISTRARA DEL LADO DEL CLIENTE A LA PAGINA */
                 $datos3['url'] = '<script src="'.base_url("").'/assets/js/funciones/funciones_oferta.js" ></script>';
                 /* ACA TRAIGO TODAS LAS OFERTAS PENNDIENTES QUE SE ENCUENTRAN ACTUALMENTE */
-                $query = $modelo->ofertas_descartadas();
+                $query = $modelo->ofertas_descartadas($session->get('admin'),$session->get('id_empresa'));
                 $datos2['result'] = $query->getResultArray();
 
                 /* ACA MANDAMOS A LLAMAR LAS VISTAS */

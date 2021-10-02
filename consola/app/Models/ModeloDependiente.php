@@ -38,15 +38,7 @@ class ModeloDependiente extends Model
     }
 
     function verificar_permiso($id_user, $filename){
-        //metodo para obtener el nombre del file:
-        $nombre_archivo = $filename;
-        //verificamos si en la ruta nos han indicado el directorio en el que se encuentra
-        if ( strpos($filename, '/') !== FALSE ){
-            //de ser asi, lo eliminamos, y solamente nos quedamos con el nombre y su extension
-            $nombre_archivo_tmp = explode('/', $filename);
-            $nombre_archivo= array_pop($nombre_archivo_tmp );
-            $filename = $nombre_archivo;
-        }  
+          
         $sql1="SELECT tblmenu.id_menu, tblmenu.nombre as nombremenu, tblmenu.prioridad,
             tblmodulo.id_modulo,  tblmodulo.nombre as nombremodulo, tblmodulo.descripcion, tblmodulo.filename,
             tblusuario_modulo.id_usuario,tblUsuario.id_tipo_usuario as admin
@@ -71,8 +63,13 @@ class ModeloDependiente extends Model
          }
          return $name_link;
     }
-    function dependientes(){
-        $data = $this->db->query("SELECT tbldependiente.id_dependiente, tbldependiente.nombres, tbldependiente.apellidos, tbldependiente.correo, tblempresa_ofertante.nombre FROM tbldependiente INNER JOIN tblempresa_ofertante on tblempresa_ofertante.id_empresa = tbldependiente.id_empresa WHERE tbldependiente.deleted_at is NULL");
+    function dependientes($admin, $id_empresa){
+        if($admin){
+            $data = $this->db->query("SELECT tbldependiente.id_dependiente, tbldependiente.nombres, tbldependiente.apellidos, tbldependiente.correo, tblempresa_ofertante.nombre FROM tbldependiente INNER JOIN tblempresa_ofertante on tblempresa_ofertante.id_empresa = tbldependiente.id_empresa WHERE tbldependiente.deleted_at is NULL");
+        }
+        else{
+            $data = $this->db->query("SELECT tbldependiente.id_dependiente, tbldependiente.nombres, tbldependiente.apellidos, tbldependiente.correo, tblempresa_ofertante.nombre FROM tbldependiente INNER JOIN tblempresa_ofertante on tblempresa_ofertante.id_empresa = tbldependiente.id_empresa WHERE tbldependiente.deleted_at is NULL AND tbldependiente.id_empresa = '$id_empresa'");
+        }
         return $data;
     }
     function rubros(){
@@ -93,7 +90,6 @@ class ModeloDependiente extends Model
     }
 
     function insertar_dependiente($nombre,$apellido,$correo, $id_empresa){
-        $id_empresa = 1;
         $db = \Config\Database::connect();
         $dependienteModel = new \App\Models\ModeloDependiente();
         $dependienteModel = model('ModeloDependiente', true, $db);

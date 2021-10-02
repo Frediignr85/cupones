@@ -38,15 +38,7 @@ class ModeloOfertas extends Model
     }
 
     function verificar_permiso($id_user, $filename){
-        //metodo para obtener el nombre del file:
-        $nombre_archivo = $filename;
-        //verificamos si en la ruta nos han indicado el directorio en el que se encuentra
-        if ( strpos($filename, '/') !== FALSE ){
-            //de ser asi, lo eliminamos, y solamente nos quedamos con el nombre y su extension
-            $nombre_archivo_tmp = explode('/', $filename);
-            $nombre_archivo= array_pop($nombre_archivo_tmp );
-            $filename = $nombre_archivo;
-        }  
+          
         $sql1="SELECT tblmenu.id_menu, tblmenu.nombre as nombremenu, tblmenu.prioridad,
             tblmodulo.id_modulo,  tblmodulo.nombre as nombremodulo, tblmodulo.descripcion, tblmodulo.filename,
             tblusuario_modulo.id_usuario,tblUsuario.id_tipo_usuario as admin
@@ -159,6 +151,21 @@ class ModeloOfertas extends Model
         $builder->where('id_oferta', $id_oferta);
         $builder->update($data);
         return $builder;
+    }
+    function verificar_codigo($codigo){
+        $data = $this->db->query("SELECT * FROM tblcompra_general WHERE id_compra_general = '$codigo'");
+        return $data;
+    }
+    function verificar_existencias($codigo){
+        
+    }
+    function canjear_oferta($codigo,$id_empresa){
+        $devolver = ""; 
+        $data = $this->db->query("SELECT tbloferta.titulo_oferta, tblcompra_detalle.precio_unitario, tblcompra_detalle.cantidad, tblcompra_detalle.total_compra FROM tbloferta INNER JOIN tblcompra_detalle on tblcompra_detalle.id_oferta = tbloferta.id_oferta INNER JOIN tblcompra_especifica on tblcompra_detalle.id_compra_especifica = tblcompra_especifica.id_compra_especifica INNER JOIN tblcompra_general on tblcompra_general.id_compra_general = tblcompra_especifica.id_compra_general WHERE tblcompra_general.id_compra_general = '$codigo' AND tblcompra_especifica.id_empresa = '$id_empresa'");
+        $data = $data->getResultArray();
+        foreach ($data as $key => $value) {
+            $id_usuario = $value['id_usuario'];
+        }
     }
 }
 

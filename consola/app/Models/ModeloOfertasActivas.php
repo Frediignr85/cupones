@@ -38,15 +38,7 @@ class ModeloOfertasActivas extends Model
     }
 
     function verificar_permiso($id_user, $filename){
-        //metodo para obtener el nombre del file:
-        $nombre_archivo = $filename;
-        //verificamos si en la ruta nos han indicado el directorio en el que se encuentra
-        if ( strpos($filename, '/') !== FALSE ){
-            //de ser asi, lo eliminamos, y solamente nos quedamos con el nombre y su extension
-            $nombre_archivo_tmp = explode('/', $filename);
-            $nombre_archivo= array_pop($nombre_archivo_tmp );
-            $filename = $nombre_archivo;
-        }  
+          
         $sql1="SELECT tblmenu.id_menu, tblmenu.nombre as nombremenu, tblmenu.prioridad,
             tblmodulo.id_modulo,  tblmodulo.nombre as nombremodulo, tblmodulo.descripcion, tblmodulo.filename,
             tblusuario_modulo.id_usuario,tblUsuario.id_tipo_usuario as admin
@@ -71,8 +63,13 @@ class ModeloOfertasActivas extends Model
          }
          return $name_link;
     }
-    function ofertas_activas(){
-        $data = $this->db->query("SELECT tbloferta.id_oferta, tblempresa_ofertante.id_empresa, tblempresa_ofertante.nombre, tbloferta.titulo_oferta, tbloferta.cantidad_limite_cupones, tbloferta.precio_regular, tbloferta.precio_oferta, tbloferta.fecha_fin, (tblempresa_ofertante.porcentaje * tbloferta.precio_oferta /100) as 'comision', (SELECT SUM(tblcompra_detalle.total_compra) FROM tblcompra_detalle INNER JOIN tbloferta as ofer1 on ofer1.id_oferta = tblcompra_detalle.id_oferta WHERE tbloferta.id_oferta = ofer1.id_oferta ) as 'ingresos_totales', (SELECT (SUM(tblcompra_detalle.total_compra)* empresa1.porcentaje /100) FROM tblcompra_detalle INNER JOIN tbloferta as ofer2 on ofer2.id_oferta = tblcompra_detalle.id_oferta INNER JOIN tblempresa_ofertante as empresa1 on empresa1.id_empresa = ofer2.id_empresa WHERE tbloferta.id_oferta = ofer2.id_oferta AND tblempresa_ofertante.id_empresa = empresa1.id_empresa = tblempresa_ofertante.id_empresa) as 'comision_total', (SELECT (SUM(tblcompra_detalle.cantidad)) FROM tblcompra_detalle INNER JOIN tbloferta as ofer2 on ofer2.id_oferta = tblcompra_detalle.id_oferta INNER JOIN tblempresa_ofertante as empresa1 on empresa1.id_empresa = ofer2.id_empresa WHERE tbloferta.id_oferta = ofer2.id_oferta AND tblempresa_ofertante.id_empresa = empresa1.id_empresa = tblempresa_ofertante.id_empresa) as 'cantidad_cupones_vendidos'  FROM tbloferta INNER JOIN tblempresa_ofertante on tbloferta.id_empresa = tblempresa_ofertante.id_empresa WHERE tbloferta.id_estado = 3");
+    function ofertas_activas($admin,$id_empresa){
+        if($admin){
+            $data = $this->db->query("SELECT tbloferta.id_oferta, tblempresa_ofertante.id_empresa, tblempresa_ofertante.nombre, tbloferta.titulo_oferta, tbloferta.cantidad_limite_cupones, tbloferta.precio_regular, tbloferta.precio_oferta, tbloferta.fecha_fin, (tblempresa_ofertante.porcentaje * tbloferta.precio_oferta /100) as 'comision', (SELECT SUM(tblcompra_detalle.total_compra) FROM tblcompra_detalle INNER JOIN tbloferta as ofer1 on ofer1.id_oferta = tblcompra_detalle.id_oferta WHERE tbloferta.id_oferta = ofer1.id_oferta ) as 'ingresos_totales', (SELECT (SUM(tblcompra_detalle.total_compra)* empresa1.porcentaje /100) FROM tblcompra_detalle INNER JOIN tbloferta as ofer2 on ofer2.id_oferta = tblcompra_detalle.id_oferta INNER JOIN tblempresa_ofertante as empresa1 on empresa1.id_empresa = ofer2.id_empresa WHERE tbloferta.id_oferta = ofer2.id_oferta AND tblempresa_ofertante.id_empresa = empresa1.id_empresa = tblempresa_ofertante.id_empresa) as 'comision_total', (SELECT (SUM(tblcompra_detalle.cantidad)) FROM tblcompra_detalle INNER JOIN tbloferta as ofer2 on ofer2.id_oferta = tblcompra_detalle.id_oferta INNER JOIN tblempresa_ofertante as empresa1 on empresa1.id_empresa = ofer2.id_empresa WHERE tbloferta.id_oferta = ofer2.id_oferta AND tblempresa_ofertante.id_empresa = empresa1.id_empresa = tblempresa_ofertante.id_empresa) as 'cantidad_cupones_vendidos'  FROM tbloferta INNER JOIN tblempresa_ofertante on tbloferta.id_empresa = tblempresa_ofertante.id_empresa WHERE tbloferta.id_estado = 3 AND tbloferta.deleted_at is NULL");
+        }
+        else{
+            $data = $this->db->query("SELECT tbloferta.id_oferta, tblempresa_ofertante.id_empresa, tblempresa_ofertante.nombre, tbloferta.titulo_oferta, tbloferta.cantidad_limite_cupones, tbloferta.precio_regular, tbloferta.precio_oferta, tbloferta.fecha_fin, (tblempresa_ofertante.porcentaje * tbloferta.precio_oferta /100) as 'comision', (SELECT SUM(tblcompra_detalle.total_compra) FROM tblcompra_detalle INNER JOIN tbloferta as ofer1 on ofer1.id_oferta = tblcompra_detalle.id_oferta WHERE tbloferta.id_oferta = ofer1.id_oferta ) as 'ingresos_totales', (SELECT (SUM(tblcompra_detalle.total_compra)* empresa1.porcentaje /100) FROM tblcompra_detalle INNER JOIN tbloferta as ofer2 on ofer2.id_oferta = tblcompra_detalle.id_oferta INNER JOIN tblempresa_ofertante as empresa1 on empresa1.id_empresa = ofer2.id_empresa WHERE tbloferta.id_oferta = ofer2.id_oferta AND tblempresa_ofertante.id_empresa = empresa1.id_empresa = tblempresa_ofertante.id_empresa) as 'comision_total', (SELECT (SUM(tblcompra_detalle.cantidad)) FROM tblcompra_detalle INNER JOIN tbloferta as ofer2 on ofer2.id_oferta = tblcompra_detalle.id_oferta INNER JOIN tblempresa_ofertante as empresa1 on empresa1.id_empresa = ofer2.id_empresa WHERE tbloferta.id_oferta = ofer2.id_oferta AND tblempresa_ofertante.id_empresa = empresa1.id_empresa = tblempresa_ofertante.id_empresa) as 'cantidad_cupones_vendidos'  FROM tbloferta INNER JOIN tblempresa_ofertante on tbloferta.id_empresa = tblempresa_ofertante.id_empresa WHERE tbloferta.id_estado = 3 AND tbloferta.deleted_at is NULL AND tbloferta.id_empresa = '$id_empresa'");
+        }
         return $data;
     }
 }

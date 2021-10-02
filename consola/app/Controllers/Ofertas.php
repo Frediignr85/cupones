@@ -99,7 +99,7 @@ class Ofertas extends BaseController
             $modelo1 = $this->ElModelo1;
             $uri = $_SERVER['SCRIPT_NAME'];
             $admin = $session->get('admin');
-            $links = $modelo->verificar_permiso($session->get('id_usuario'),$uri);
+            $links = $modelo->verificar_permiso($session->get('id_usuario'),"ofertas/editar_oferta");
             $query = $modelo->datos_empresa(1);
             $datos['result'] = $query->getResultArray();
             if ($links!='NOT' || $admin=='1' ){
@@ -186,7 +186,7 @@ class Ofertas extends BaseController
             $modelo = $this->ElModelo;
             $uri = $_SERVER['SCRIPT_NAME'];
             $admin = $session->get('admin');
-            $links = $modelo->verificar_permiso($session->get('id_usuario'),$uri);
+            $links = $modelo->verificar_permiso($session->get('id_usuario'),"ofertas/borrar_oferta");
             $query = $modelo->datos_empresa(1);
             $datos['result'] = $query->getResultArray();
             if ($links!='NOT' || $admin=='1' ){
@@ -414,6 +414,21 @@ class Ofertas extends BaseController
         else{
             $xdatos['typeinfo'] ="Error";
             $xdatos['msg'] = "La oferta no se pudo descartar!";
+        }
+        echo json_encode($xdatos);
+    }
+    function canjear_oferta(){
+        $modelo = $this->ElModelo;
+        $session = session();    
+        $id_empresa =$session->get('id_usuario');
+        $codigo = $this->request->getPost('codigo');
+        $query = $modelo->verificar_codigo($codigo);
+        if(count($query->getResultArray()) > 0){
+            
+        }
+        else{
+            $xdatos['typeinfo'] ="Error";
+            $xdatos['msg'] = "No existe ese codigo!";
         }
         echo json_encode($xdatos);
     }

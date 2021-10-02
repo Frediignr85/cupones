@@ -43,9 +43,15 @@ class Dashboard extends BaseController
             $datos['menu'] = $menu;
             echo view('header',$datos1);
             echo view('main_menu',$datos);
-            
-
-            echo view('dashboard');
+            if($session->get('id_tipo_usuario') == 1){
+                echo view('dashboard');
+            }
+            if($session->get('id_tipo_usuario') == 2){
+                echo view('dashboard');
+            }
+            if($session->get('id_tipo_usuario') == 3){
+                echo view('dashboard_dependiente');
+            }
             echo view('footer',$datos3);
         }
     }

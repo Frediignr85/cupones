@@ -25,7 +25,7 @@ class Ofertas_Activas extends BaseController
             $modelo1 = $this->ElModelo1;
             $uri = $_SERVER['SCRIPT_NAME'];
             $admin = $session->get('admin');
-            $links = $modelo->verificar_permiso($session->get('id_usuario'),$uri);
+            $links = $modelo->verificar_permiso($session->get('id_usuario'),"ofertas_activas/");
 
             $query = $modelo->datos_empresa(1);
             $datos['result'] = $query->getResultArray();
@@ -52,12 +52,12 @@ class Ofertas_Activas extends BaseController
                 /* ACA LE PASAMOS EL SCRIPT QUE ADMINISTRARA DEL LADO DEL CLIENTE A LA PAGINA */
                 $datos3['url'] = '<script src="'.base_url("").'/assets/js/funciones/funciones_oferta.js" ></script>';
                 /* ACA TRAIGO TODAS LAS OFERTAS PENNDIENTES QUE SE ENCUENTRAN ACTUALMENTE */
-                $query = $modelo->ofertas_activas();
+                $query = $modelo->ofertas_activas($session->get('admin'),$session->get('id_empresa'));
                 $datos2['result'] = $query->getResultArray();
 
                 /* ACA COMPROBAMOS LOS PERMISOS QUE SE TENDRAN PARA EL SIGUIENTE ADMIN */
                 $datos2['permiso_ver'] = 0;
-                $links2 = $modelo->verificar_permiso($session->get('id_usuario'),"ver_oferta");
+                $links2 = $modelo->verificar_permiso($session->get('id_usuario'),"ofertas/ver_oferta");
                 if ($links2!='NOT' || $admin=='1' ){
                     $datos2['permiso_ver'] = 1;
                 }

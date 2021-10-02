@@ -38,15 +38,7 @@ class ModeloOfertasDescartadas extends Model
     }
 
     function verificar_permiso($id_user, $filename){
-        //metodo para obtener el nombre del file:
-        $nombre_archivo = $filename;
-        //verificamos si en la ruta nos han indicado el directorio en el que se encuentra
-        if ( strpos($filename, '/') !== FALSE ){
-            //de ser asi, lo eliminamos, y solamente nos quedamos con el nombre y su extension
-            $nombre_archivo_tmp = explode('/', $filename);
-            $nombre_archivo= array_pop($nombre_archivo_tmp );
-            $filename = $nombre_archivo;
-        }  
+          
         $sql1="SELECT tblmenu.id_menu, tblmenu.nombre as nombremenu, tblmenu.prioridad,
             tblmodulo.id_modulo,  tblmodulo.nombre as nombremodulo, tblmodulo.descripcion, tblmodulo.filename,
             tblusuario_modulo.id_usuario,tblUsuario.id_tipo_usuario as admin
@@ -71,8 +63,13 @@ class ModeloOfertasDescartadas extends Model
          }
          return $name_link;
     }
-    function ofertas_descartadas(){
-        $data = $this->db->query("SELECT tbloferta.id_oferta, tblempresa_ofertante.nombre, tbloferta.titulo_oferta, tbloferta.cantidad_limite_cupones, tbloferta.precio_regular, tbloferta.precio_oferta, tbloferta.fecha_inicio, tbloferta.fecha_fin, tbloferta.fecha_limite, (tblempresa_ofertante.porcentaje * tbloferta.precio_oferta /100) as 'comision', tblempresa_ofertante.id_empresa FROM tbloferta INNER JOIN tblempresa_ofertante on tbloferta.id_empresa = tblempresa_ofertante.id_empresa WHERE tbloferta.id_estado = 6");
+    function ofertas_descartadas($admin,$id_empresa){
+        if($admin){
+            $data = $this->db->query("SELECT tbloferta.id_oferta, tblempresa_ofertante.nombre, tbloferta.titulo_oferta, tbloferta.cantidad_limite_cupones, tbloferta.precio_regular, tbloferta.precio_oferta, tbloferta.fecha_inicio, tbloferta.fecha_fin, tbloferta.fecha_limite, (tblempresa_ofertante.porcentaje * tbloferta.precio_oferta /100) as 'comision', tblempresa_ofertante.id_empresa FROM tbloferta INNER JOIN tblempresa_ofertante on tbloferta.id_empresa = tblempresa_ofertante.id_empresa WHERE tbloferta.id_estado = 6 AND tbloferta.deleted_at is NULL");
+        }
+        else{
+            $data = $this->db->query("SELECT tbloferta.id_oferta, tblempresa_ofertante.nombre, tbloferta.titulo_oferta, tbloferta.cantidad_limite_cupones, tbloferta.precio_regular, tbloferta.precio_oferta, tbloferta.fecha_inicio, tbloferta.fecha_fin, tbloferta.fecha_limite, (tblempresa_ofertante.porcentaje * tbloferta.precio_oferta /100) as 'comision', tblempresa_ofertante.id_empresa FROM tbloferta INNER JOIN tblempresa_ofertante on tbloferta.id_empresa = tblempresa_ofertante.id_empresa WHERE tbloferta.id_estado = 6 AND tbloferta.deleted_at is NULL AND tbloferta.id_empresa = '$id_empresa'");
+        }
         return $data;
     }
     

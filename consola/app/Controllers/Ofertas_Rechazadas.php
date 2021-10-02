@@ -25,7 +25,7 @@ class Ofertas_Rechazadas extends BaseController
             $modelo1 = $this->ElModelo1;
             $uri = $_SERVER['SCRIPT_NAME'];
             $admin = $session->get('admin');
-            $links = $modelo->verificar_permiso($session->get('id_usuario'),$uri);
+            $links = $modelo->verificar_permiso($session->get('id_usuario'),"ofertas_rechazadas/");
 
             $query = $modelo->datos_empresa(1);
             $datos['result'] = $query->getResultArray();
@@ -52,22 +52,22 @@ class Ofertas_Rechazadas extends BaseController
                 /* ACA LE PASAMOS EL SCRIPT QUE ADMINISTRARA DEL LADO DEL CLIENTE A LA PAGINA */
                 $datos3['url'] = '<script src="'.base_url("").'/assets/js/funciones/funciones_oferta.js" ></script>';
                 /* ACA TRAIGO TODAS LAS OFERTAS PENNDIENTES QUE SE ENCUENTRAN ACTUALMENTE */
-                $query = $modelo->ofertas_rechazadas();
+                $query = $modelo->ofertas_rechazadas($session->get('admin'),$session->get('id_empresa'));
                 $datos2['result'] = $query->getResultArray();
 
                 /* ACA COMPROBAMOS LOS PERMISOS QUE SE TENDRAN PARA EL SIGUIENTE ADMIN */
                 $datos2['permiso_editar'] = 0;
-                $links2 = $modelo->verificar_permiso($session->get('id_usuario'),"editar_oferta");
+                $links2 = $modelo->verificar_permiso($session->get('id_usuario'),"ofertas/editar_oferta");
                 if ($links2!='NOT' || $admin=='1' ){
                     $datos2['permiso_editar'] = 1;
                 }
                 $datos2['permiso_borrar'] = 0;
-                $links2 = $modelo->verificar_permiso($session->get('id_usuario'),"borrar_oferta");
+                $links2 = $modelo->verificar_permiso($session->get('id_usuario'),"ofertas/borrar_oferta");
                 if ($links2!='NOT' || $admin=='1' ){
                     $datos2['permiso_borrar'] = 1;
                 }
                 $datos2['ver_justificacion'] = 0;
-                $links2 = $modelo->verificar_permiso($session->get('id_usuario'),"ver_justificacion");
+                $links2 = $modelo->verificar_permiso($session->get('id_usuario'),"ofertas/ver_justificacion");
                 if ($links2!='NOT' || $admin=='1' ){
                     $datos2['ver_justificacion'] = 1;
                 }
