@@ -15,7 +15,7 @@ class ModeloLogin extends Model
         return $data;
     }
     function verificar_credenciales($username,$password){
-        $data = $this->db->query("SELECT * FROM tblusuario WHERE password = '".MD5($password)."' AND usuario = '$username' AND id_tipo_usuario != '4'");
+        $data = $this->db->query("SELECT * FROM tblusuario WHERE password = '".MD5($password)."' AND usuario = '$username' AND id_tipo_usuario != '4' AND activo = 1");
         return $data;
     }
 }

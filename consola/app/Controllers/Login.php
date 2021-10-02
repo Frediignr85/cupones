@@ -81,6 +81,7 @@ class Login extends BaseController
                     $id_admin_sucursal = $value['id_admin_sucursal'];
                     $activo = $value['activo'];
                     $id_sucursal =$value['id_sucursal'];
+                    $id_empresa =$value['id_empresa'];
                 }
                
                 $admin = 0;
@@ -110,12 +111,13 @@ class Login extends BaseController
                 $_SESSION['activo'] = $activo;
                 $_SESSION['id_sucursal'] = $id_sucursal;
                 $_SESSION['admin'] = $admin;
+                $_SESSION['id_empresa'] = $id_empresa;
                 $xdatos['typeinfo'] ="Success";
                 $xdatos['msg'] = "Bienvenido $nombre!";
             }
             else{
                 $xdatos['typeinfo'] ="Error";
-                $xdatos['msg'] = "Las credenciales no son las correctas!";
+                $xdatos['msg'] = "Las credenciales no son las correctas o el usuario esta inactivo!";
             }
         }   
         else{

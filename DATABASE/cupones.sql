@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-09-2021 a las 04:44:12
+-- Tiempo de generación: 02-10-2021 a las 04:35:16
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 8.0.2
 
@@ -20,6 +20,23 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `cupones`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tblcanje_oferta`
+--
+
+CREATE TABLE `tblcanje_oferta` (
+  `id_canje_oferta` int(11) NOT NULL,
+  `usuario_canje` varchar(255) NOT NULL,
+  `id_oferta` int(11) NOT NULL,
+  `id_compra_general` int(11) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -54,7 +71,10 @@ CREATE TABLE `tblcliente` (
 CREATE TABLE `tblcompra_detalle` (
   `id_compra_detalle` int(11) NOT NULL,
   `id_compra_especifica` int(11) NOT NULL,
-  `id_cupon` int(11) NOT NULL,
+  `id_oferta` int(11) NOT NULL,
+  `precio_unitario` decimal(18,4) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `cantidad_canjeada` int(11) NOT NULL,
   `total_compra` decimal(18,4) NOT NULL,
   `total_ahorrado` decimal(18,4) NOT NULL,
   `id_estado` int(11) NOT NULL,
@@ -67,8 +87,8 @@ CREATE TABLE `tblcompra_detalle` (
 -- Volcado de datos para la tabla `tblcompra_detalle`
 --
 
-INSERT INTO `tblcompra_detalle` (`id_compra_detalle`, `id_compra_especifica`, `id_cupon`, `total_compra`, `total_ahorrado`, `id_estado`, `created_at`, `update_at`, `deleted_at`) VALUES
-(1, 1, 1, '12.0000', '12.0000', 1, '2021-09-29 15:00:32', '2021-09-29 15:00:32', NULL);
+INSERT INTO `tblcompra_detalle` (`id_compra_detalle`, `id_compra_especifica`, `id_oferta`, `precio_unitario`, `cantidad`, `cantidad_canjeada`, `total_compra`, `total_ahorrado`, `id_estado`, `created_at`, `update_at`, `deleted_at`) VALUES
+(1, 1, 1, '11.0000', 1, 0, '11.0000', '100.0000', 1, '2021-09-29 15:00:32', '2021-09-29 15:00:32', NULL);
 
 -- --------------------------------------------------------
 
@@ -105,6 +125,8 @@ CREATE TABLE `tblcompra_general` (
   `total_compra` decimal(18,4) NOT NULL,
   `total_ahorrado` decimal(18,4) NOT NULL,
   `id_cliente` int(11) NOT NULL,
+  `nombre_dueno` varchar(150) NOT NULL,
+  `nombre_tarjeta` varchar(100) NOT NULL,
   `numero_tarjeta` varchar(20) NOT NULL,
   `fecha_expiracion` varchar(10) NOT NULL,
   `ccv` varchar(5) NOT NULL,
@@ -147,6 +169,35 @@ INSERT INTO `tbldepartamento` (`id_departamento`, `nombre_departamento`, `create
 (12, 'Morazán', '2020-11-30 13:33:56', '2020-11-30 13:33:56', NULL, 1),
 (13, 'San Miguel', '2020-11-30 13:33:56', '2020-11-30 13:33:56', NULL, 1),
 (14, 'La Unión', '2020-11-30 13:33:56', '2020-11-30 13:33:56', NULL, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tbldependiente`
+--
+
+CREATE TABLE `tbldependiente` (
+  `id_dependiente` int(11) NOT NULL,
+  `nombres` varchar(150) NOT NULL,
+  `apellidos` varchar(150) NOT NULL,
+  `correo` varchar(200) NOT NULL,
+  `id_empresa` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `tbldependiente`
+--
+
+INSERT INTO `tbldependiente` (`id_dependiente`, `nombres`, `apellidos`, `correo`, `id_empresa`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Fredy Mauricio', 'Benitez Orellana', 'fredymauricio.benitez.orellana@gmail.com', 0, '2021-10-01 19:28:04', '2021-10-01 19:28:04', NULL),
+(2, 'Fredy Mauricio', 'Benitez Orellana', 'fredymauricio.benitez.orellana@gmail.com', 1, '2021-10-01 19:28:28', '2021-10-01 19:28:28', NULL),
+(3, 'Fredy Mauricio', 'Benitez Orellana', 'fredymauricio.benitez.orellana@gmail.com', 1, '2021-10-01 19:28:29', '2021-10-01 19:28:29', NULL),
+(4, 'Fredy Mauricio', 'Benitez Orellana', 'fredymauricio.benitez.orellana@gmail.com', 1, '2021-10-01 19:28:50', '2021-10-01 19:28:50', NULL),
+(5, 'Fredy Mauricio', 'Benitez Orellana', 'fredymauricio.benitez.orellana@gmail.com', 1, '2021-10-01 19:28:51', '2021-10-01 19:28:51', NULL),
+(6, 'Fredy', 'Benitez', 'fredymauricio@gmail.com', 1, '2021-10-01 19:29:05', '2021-10-01 19:29:05', NULL);
 
 -- --------------------------------------------------------
 
@@ -357,7 +408,15 @@ INSERT INTO `tblmenu` (`id_menu`, `nombre`, `prioridad`, `icono`, `visible`, `cr
 (12, 'Cursos', 2, 'fa fa-bolt', 0, '2021-08-11 11:21:54', '2021-08-11 11:21:54', NULL),
 (13, 'Evaluaciones', 4, 'fa fa-tasks', 0, '2021-08-11 21:10:19', '2021-08-11 21:10:19', NULL),
 (14, 'Empresas', 1, 'fa fa-university', 1, '2021-09-28 20:06:15', '2021-09-28 20:06:15', NULL),
-(15, 'Rubros', 3, 'fa fa-glass ', 1, '2021-09-29 19:29:35', '2021-09-29 19:29:35', NULL);
+(15, 'Rubros', 1, 'fa fa-glass ', 1, '2021-09-29 19:29:35', '2021-09-29 19:29:35', NULL),
+(16, 'Ofertas Pendientes', 3, 'fa fa-hand-paper-o', 1, '2021-10-01 11:39:12', '2021-10-01 11:39:12', NULL),
+(17, 'Ofertas Aprobadas', 4, 'fa fa-hand-peace-o', 1, '2021-10-01 11:39:12', '2021-10-01 11:39:12', NULL),
+(18, 'Ofertas Activas', 5, 'fa fa-check ', 1, '2021-10-01 11:39:12', '2021-10-01 11:39:12', NULL),
+(19, 'Ofertas Pasadas', 6, 'fa fa-backward', 1, '2021-10-01 11:39:12', '2021-10-01 11:39:12', NULL),
+(20, 'Ofertas Rechazadas', 7, 'fa fa-times', 1, '2021-10-01 11:39:12', '2021-10-01 11:39:12', NULL),
+(21, 'Ofertas descartadas', 8, 'fa fa-trash', 1, '2021-10-01 11:39:12', '2021-10-01 11:39:12', NULL),
+(22, 'Ofertas', 1, 'fa fa-star', 1, '2021-10-01 16:19:51', '2021-10-01 16:19:51', NULL),
+(23, 'Dependientes', 8, 'fa fa-users', 1, '2021-10-01 18:48:58', '2021-10-01 18:48:58', NULL);
 
 -- --------------------------------------------------------
 
@@ -436,7 +495,18 @@ INSERT INTO `tblmodulo` (`id_modulo`, `nombre`, `descripcion`, `filename`, `icon
 (73, 'Admin Rubros', 'Admin Rubros', 'rubros/', '', 1, 1, '2021-09-29 19:31:28', '2021-09-29 19:31:28', NULL, 15),
 (74, 'Agregar Rubro', 'Agregar Rubro', 'rubros/agregar_rubro/', '', 0, 0, '2021-09-29 19:31:28', '2021-09-29 19:31:28', NULL, 15),
 (75, 'Editar Rubro', 'Editar Rubro', 'rubros/editar_rubro/', '', 0, 0, '2021-09-29 19:31:28', '2021-09-29 19:31:28', NULL, 15),
-(76, 'Borrar Rubro', 'Borrar Rubro', 'rubros/borrar_rubro', '', 0, 0, '2021-09-29 19:31:28', '2021-09-29 19:31:28', NULL, 15);
+(76, 'Borrar Rubro', 'Borrar Rubro', 'rubros/borrar_rubro', '', 0, 0, '2021-09-29 19:31:28', '2021-09-29 19:31:28', NULL, 15),
+(77, 'Ofertas Pendientes', 'Ofertas Pendientes', 'ofertas_pendientes/', '', 1, 1, '2021-10-01 11:42:19', '2021-10-01 11:42:19', NULL, 16),
+(78, 'Ofertas Aprobadas', 'Ofertas Aprobadas', 'ofertas_aprobadas/', '', 1, 1, '2021-10-01 11:42:19', '2021-10-01 11:42:19', NULL, 17),
+(79, 'Ofertas Activas', 'Ofertas Activas', 'ofertas_activas/', '', 1, 1, '2021-10-01 11:42:19', '2021-10-01 11:42:19', NULL, 18),
+(80, 'Ofertas Pasadas', 'Ofertas Pasadas', 'ofertas_pasadas', '', 1, 1, '2021-10-01 11:42:19', '2021-10-01 11:42:19', NULL, 19),
+(81, 'Ofertas Rechazadas', 'Ofertas Rechazadas', 'ofertas_rechazadas/', '', 1, 1, '2021-10-01 11:42:19', '2021-10-01 11:42:19', NULL, 20),
+(82, 'Ofertas Descartadas', 'Ofertas Descartadas', 'ofertas_descartadas/', '', 1, 1, '2021-10-01 11:42:19', '2021-10-01 11:42:19', NULL, 21),
+(83, 'Agregar Oferta', 'Agregar Oferta', 'ofertas/agregar_oferta', '', 1, 1, '2021-10-01 16:20:16', '2021-10-01 16:20:16', NULL, 22),
+(84, 'Admin Dependientes', 'Admin Dependientes', 'dependientes/', '', 1, 1, '2021-10-01 18:50:48', '2021-10-01 18:50:48', NULL, 23),
+(85, 'Agregar Dependiente', 'Agregar Dependiente', 'dependientes/agregar_dependiente', '', 0, 0, '2021-10-01 18:50:48', '2021-10-01 18:50:48', NULL, 23),
+(86, 'Editar Dependiente', 'Editar Dependiente', 'dependientes/editar_dependiente', '', 0, 0, '2021-10-01 18:50:48', '2021-10-01 18:50:48', NULL, 23),
+(87, 'Borrar Dependiente', 'Borrar Dependiente', 'dependientes/borrar_dependiente', '', 0, 0, '2021-10-01 18:50:48', '2021-10-01 18:50:48', NULL, 23);
 
 -- --------------------------------------------------------
 
@@ -738,6 +808,8 @@ CREATE TABLE `tbloferta` (
   `cantidad_limite_cupones` int(11) DEFAULT NULL,
   `descripcion` text NOT NULL,
   `otros_detalles` text DEFAULT NULL,
+  `justificacion` text DEFAULT NULL,
+  `ilimitado` tinyint(4) NOT NULL,
   `id_estado` int(11) NOT NULL,
   `id_empresa` int(11) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -749,8 +821,10 @@ CREATE TABLE `tbloferta` (
 -- Volcado de datos para la tabla `tbloferta`
 --
 
-INSERT INTO `tbloferta` (`id_oferta`, `titulo_oferta`, `precio_regular`, `precio_oferta`, `fecha_inicio`, `fecha_fin`, `fecha_limite`, `cantidad_limite_cupones`, `descripcion`, `otros_detalles`, `id_estado`, `id_empresa`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Oferta nUeva', '111.0000', '11.0000', '2021-09-29', '2021-09-30', '2021-10-15', 100, 'alklk;as', '123', 2, 1, '2021-09-29 15:01:36', '2021-09-29 15:01:36', NULL);
+INSERT INTO `tbloferta` (`id_oferta`, `titulo_oferta`, `precio_regular`, `precio_oferta`, `fecha_inicio`, `fecha_fin`, `fecha_limite`, `cantidad_limite_cupones`, `descripcion`, `otros_detalles`, `justificacion`, `ilimitado`, `id_estado`, `id_empresa`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Oferta nUeva', '111.0000', '11.0000', '2021-09-29', '2021-09-30', '2021-10-15', 100, 'alklk;as', '123', NULL, 0, 6, 1, '2021-09-29 15:01:36', '2021-09-29 15:01:36', NULL),
+(2, 'Oferta nueva', '15.0000', '10.0000', '0000-00-00', '0000-00-00', '0000-00-00', 100, 'Aprovecha esta ofera', '', NULL, 0, 1, 1, '2021-10-01 17:06:46', '2021-10-01 17:06:46', NULL),
+(3, 'Super promocion', '25.0000', '20.0000', '2021-10-02', '2021-10-31', '2021-11-30', 150, 'Rebaja del 20% en todos tus productos', 'Agregando detalles perturbadores', 'Se rechazaq esta propuesta ', 0, 6, 1, '2021-10-01 17:26:15', '2021-10-01 17:26:15', '2021-10-01 18:40:03');
 
 -- --------------------------------------------------------
 
@@ -855,64 +929,65 @@ CREATE TABLE `tblusuario` (
   `nombre` varchar(60) NOT NULL,
   `usuario` varchar(60) NOT NULL,
   `password` text NOT NULL,
-  `imagen` text DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
   `deleted_at` datetime DEFAULT NULL,
   `id_tipo_usuario` int(11) NOT NULL,
   `id_dependiente` int(11) DEFAULT NULL,
   `id_admin_sucursal` int(11) NOT NULL,
-  `id_estudiante` int(11) DEFAULT NULL,
+  `id_cliente` int(11) DEFAULT NULL,
   `activo` tinyint(4) NOT NULL,
-  `id_sucursal` int(11) NOT NULL
+  `id_sucursal` int(11) NOT NULL,
+  `id_empresa` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `tblusuario`
 --
 
-INSERT INTO `tblusuario` (`id_usuario`, `nombre`, `usuario`, `password`, `imagen`, `created_at`, `updated_at`, `deleted_at`, `id_tipo_usuario`, `id_dependiente`, `id_admin_sucursal`, `id_estudiante`, `activo`, `id_sucursal`) VALUES
-(2, 'Administrador de Sistema', 'admin', '827ccb0eea8a706c4c34a16891f84e7b', '', '2020-12-03 09:02:53', '2020-12-10 10:49:00', NULL, 1, -1, 0, NULL, 1, 1),
-(5, 'elias', 'Keiry_Virginia', '29a2b2e1849474d94d12051309c7b4d7', NULL, '2021-05-02 08:48:07', '2021-05-02 08:48:07', NULL, 1, 7, 0, NULL, 1, 1),
-(6, 'Fredy Mauricio', 'Fredy_Benitez', '11d2cbd738c7436679d45a24db32f9ad', NULL, '2021-08-11 09:35:39', '2021-08-11 09:35:39', NULL, 2, 1, 0, 0, 1, 1),
-(7, 'Ingrid Roxana', 'Ingrid_Roxana', 'e3390f914a2babbad2ad006f4e544737', NULL, '2021-08-11 09:36:20', '2021-08-11 09:36:20', NULL, 2, 2, 0, 0, 1, 1),
-(8, 'Martin', 'Martin_Marcos', 'f482259273ffd79b2728971e7b878ed8', NULL, '2021-08-11 09:39:34', '2021-08-11 09:39:34', NULL, 2, 3, 0, 0, 1, 1),
-(9, 'Martin', 'Elias_Gonzales', 'cfbbc7fb5d5f597e5bbe5e8cb7035170', NULL, '2021-08-11 09:40:48', '2021-08-11 09:40:48', NULL, 2, 4, 0, 0, 1, 1),
-(10, 'Kevin Antonio', 'Kevin_Espinoza', '69b248c59200ceb800daadbb9de6d798', NULL, '2021-08-11 09:41:19', '2021-08-11 09:41:19', NULL, 2, 5, 0, 0, 1, 1),
-(13, 'frediignr', 'EST20210000', 'ad8ea97be12752efd3cde77114674847', NULL, '2021-08-11 10:47:52', '2021-08-11 10:47:52', NULL, 3, NULL, 0, 3, 1, 1),
-(14, 'Elias_Batres', 'EST20210001', 'cf754f5401fb166cff0d894029d81f5b', NULL, '2021-08-11 10:50:40', '2021-08-11 10:50:40', NULL, 3, NULL, 0, 4, 1, 1),
-(15, 'Ingrid_Roxana', 'EST20210002', 'b3a37afac871b33fed4fdaaafa70da83', NULL, '2021-08-11 17:56:13', '2021-08-11 17:56:13', NULL, 3, NULL, 0, 5, 1, 1),
-(16, 'Fredy_Benitez', 'EST20210003', 'cb9d2461150e3d2d054e437561842ef2', NULL, '2021-08-11 17:56:40', '2021-08-11 17:56:40', NULL, 3, NULL, 0, 6, 1, 1),
-(17, 'Keiry_Virginia', 'EST20210004', 'fb8d293282441b7e150cb908cdda8701', NULL, '2021-08-11 17:57:39', '2021-08-11 17:57:39', NULL, 3, NULL, 0, 7, 1, 1),
-(18, 'Airon_Bautista', 'EST20210005', '318c81549e198bb5fb0ef545642fac1a', NULL, '2021-08-11 18:13:02', '2021-08-11 18:13:02', NULL, 3, NULL, 0, 8, 1, 1),
-(19, 'Blanca_Mendez', 'EST20210006', 'd0e9a5be7c31886679a62eb7875090f8', NULL, '2021-08-11 18:13:33', '2021-08-11 18:13:33', NULL, 3, NULL, 0, 9, 1, 1),
-(20, 'Blanca_Guardado', 'EST20210007', '8e3b5cbd32b9622694b97ab8cd902b24', NULL, '2021-08-11 18:14:26', '2021-08-11 18:14:26', NULL, 3, NULL, 0, 10, 1, 1),
-(21, 'Carlos_Vargas', 'EST20210008', 'b343ebf885fa59bef47663da90d075e5', NULL, '2021-08-11 18:15:26', '2021-08-11 18:15:26', NULL, 3, NULL, 0, 11, 1, 1),
-(22, 'Cesar_Morales', 'EST20210009', '9a3f666a2871000d70eb76cf9cb825a7', NULL, '2021-08-11 18:16:04', '2021-08-11 18:16:04', NULL, 3, NULL, 0, 12, 1, 1),
-(23, 'Cindy_Molina', 'EST20210010', '4b64e6ae5637d95b09f80265b667ee81', NULL, '2021-08-11 18:16:30', '2021-08-11 18:16:30', NULL, 3, NULL, 0, 13, 1, 1),
-(24, 'Christian_Chamul', 'EST20210011', 'dff9a61757fed1edbdf08b1d796c444a', NULL, '2021-08-11 18:17:38', '2021-08-11 18:17:38', NULL, 3, NULL, 0, 14, 1, 1),
-(25, 'Dilver_Yanez', 'EST20210012', '92284da8eab8c2f12dc1ae2465e77fde', NULL, '2021-08-11 18:18:11', '2021-08-11 18:18:11', NULL, 3, NULL, 0, 15, 1, 1),
-(26, 'Emerson_Cartagena', 'EST20210013', '79466c04ebd513ce8df9a0ade5ab6f25', NULL, '2021-08-11 18:19:09', '2021-08-11 18:19:09', NULL, 3, NULL, 0, 16, 1, 1),
-(27, 'Francisco_Mendez', 'EST20210014', '60861c594b10150825313dfac2ecc363', NULL, '2021-08-11 18:19:39', '2021-08-11 18:19:39', NULL, 3, NULL, 0, 17, 1, 1),
-(28, 'Guillermo_Martinez', 'EST20210015', 'a15833c08f699f9f688db5608b84e474', NULL, '2021-08-11 18:20:15', '2021-08-11 18:20:15', NULL, 3, NULL, 0, 18, 1, 1),
-(29, 'Heysel_Pereira', 'EST20210016', '32f33d39d24134466e021a9e65003b82', NULL, '2021-08-11 18:20:44', '2021-08-11 18:20:44', NULL, 3, NULL, 0, 19, 1, 1),
-(30, 'Jhonatan_Hernandez', 'EST20210017', '4b585e78aa048f1491d994dc3db50393', NULL, '2021-08-11 18:21:13', '2021-08-11 18:21:13', NULL, 3, NULL, 0, 20, 1, 1),
-(31, 'Josue_Barahona', 'EST20210018', '95adff0fe32a170290dbde87fa5a1fc2', NULL, '2021-08-11 18:21:44', '2021-08-11 18:21:44', NULL, 3, NULL, 0, 21, 1, 1),
-(32, 'Karla_Maldonado', 'EST20210019', '3bb706d51879adf94c5e9d4e6f93890c', NULL, '2021-08-11 18:22:28', '2021-08-11 18:22:28', NULL, 3, NULL, 0, 22, 1, 1),
-(33, 'Kevin_Flores', 'EST20210020', '26263d17b8c9d80940ae3c8996c459e1', NULL, '2021-08-11 18:22:51', '2021-08-11 18:22:51', NULL, 3, NULL, 0, 23, 1, 1),
-(34, 'Kevin_Rodriguez', 'EST20210021', '1440b6e2238c0dfa42c71f816d0f45d6', NULL, '2021-08-11 18:24:54', '2021-08-11 18:24:54', NULL, 3, NULL, 0, 24, 1, 1),
-(35, 'Manuel_Reyes', 'EST20210022', '7af89ad90508f9320cebaed6e55b4ffe', NULL, '2021-08-11 18:25:31', '2021-08-11 18:25:31', NULL, 3, NULL, 0, 25, 1, 1),
-(36, 'Miguel_Perez', 'EST20210023', '5f1584a0f0a9a3c7c14f7a0005bc3688', NULL, '2021-08-11 18:25:54', '2021-08-11 18:25:54', NULL, 3, NULL, 0, 26, 1, 1),
-(37, 'Oscar_Lopez', 'EST20210024', 'e9f96ca907fbef2a7704bca43166849a', NULL, '2021-08-11 18:26:23', '2021-08-11 18:26:23', NULL, 3, NULL, 0, 27, 1, 1),
-(38, 'Reina_Zavala', 'EST20210025', 'ddab8e038b6e041b14638e922b9041ad', NULL, '2021-08-11 18:27:22', '2021-08-11 18:27:22', NULL, 3, NULL, 0, 28, 1, 1),
-(39, 'Wilber_Perdomo', 'EST20210026', 'c13188c23f2b27958df80dae9abd2380', NULL, '2021-08-11 18:27:48', '2021-08-11 18:27:48', NULL, 3, NULL, 0, 29, 1, 1),
-(40, 'Emerson_Cartagena', 'Emerson_Cartagena', '3c923a682d7c1cdca089fb52b23eb0f0', NULL, '2021-08-11 18:29:25', '2021-08-11 18:29:25', NULL, 2, 6, 0, 0, 1, 1),
-(41, 'Estela_Fuentez', 'DOC20210006', '9024fd55fe8a9587ee49b371ff2d93bd', NULL, '2021-08-16 12:35:45', '2021-08-16 17:50:00', NULL, 2, 7, 0, 0, 1, 1),
-(42, 'Administrador 2', 'admin2', 'c84258e9c39059a89ab77d846ddab909', NULL, '2021-08-16 17:55:20', '2021-08-16 17:55:20', NULL, 1, NULL, 0, NULL, 1, 1),
-(43, 'Cristian_Pineda', 'EST20210027', '59e17d8eb6d0204e060102c9e2680ca2', NULL, '2021-08-16 19:08:24', '2021-08-16 19:08:24', NULL, 3, NULL, 0, 30, 1, 1),
-(44, 'Armando_Campos', 'DOC20210007', '827ccb0eea8a706c4c34a16891f84e7b', NULL, '2021-08-27 19:43:53', '2021-08-27 19:43:53', NULL, 2, 8, 0, 0, 1, 1),
-(45, 'Luis_Guevara', 'EST20210028', '3bc9135a76a1afbfd7e829a3bb025cbe', NULL, '2021-08-27 19:51:08', '2021-08-27 19:51:08', NULL, 3, NULL, 0, 31, 1, 1),
-(46, 'Antonio Juarez', 'EST20210029', 'e24ed772e7d723800bf5e736e0bf9243', NULL, '2021-08-29 08:17:44', '2021-08-29 08:17:44', NULL, 3, NULL, 0, 32, 1, 1);
+INSERT INTO `tblusuario` (`id_usuario`, `nombre`, `usuario`, `password`, `created_at`, `updated_at`, `deleted_at`, `id_tipo_usuario`, `id_dependiente`, `id_admin_sucursal`, `id_cliente`, `activo`, `id_sucursal`, `id_empresa`) VALUES
+(2, 'Administrador de Sistema', 'admin', '827ccb0eea8a706c4c34a16891f84e7b', '2020-12-03 09:02:53', '2020-12-10 10:49:00', NULL, 1, -1, 0, NULL, 1, 1, 0),
+(5, 'elias', 'Keiry_Virginia', '29a2b2e1849474d94d12051309c7b4d7', '2021-05-02 08:48:07', '2021-05-02 08:48:07', NULL, 1, 7, 0, NULL, 1, 1, 0),
+(6, 'Fredy Mauricio', 'Fredy_Benitez', '11d2cbd738c7436679d45a24db32f9ad', '2021-08-11 09:35:39', '2021-08-11 09:35:39', NULL, 2, 1, 0, 0, 1, 1, 0),
+(7, 'Ingrid Roxana', 'Ingrid_Roxana', 'e3390f914a2babbad2ad006f4e544737', '2021-08-11 09:36:20', '2021-08-11 09:36:20', NULL, 2, 2, 0, 0, 1, 1, 0),
+(8, 'Martin', 'Martin_Marcos', 'f482259273ffd79b2728971e7b878ed8', '2021-08-11 09:39:34', '2021-08-11 09:39:34', NULL, 2, 3, 0, 0, 1, 1, 0),
+(9, 'Martin', 'Elias_Gonzales', 'cfbbc7fb5d5f597e5bbe5e8cb7035170', '2021-08-11 09:40:48', '2021-08-11 09:40:48', NULL, 2, 4, 0, 0, 1, 1, 0),
+(10, 'Kevin Antonio', 'Kevin_Espinoza', '69b248c59200ceb800daadbb9de6d798', '2021-08-11 09:41:19', '2021-08-11 09:41:19', NULL, 2, 5, 0, 0, 1, 1, 0),
+(13, 'frediignr', 'EST20210000', 'ad8ea97be12752efd3cde77114674847', '2021-08-11 10:47:52', '2021-08-11 10:47:52', NULL, 3, NULL, 0, 3, 1, 1, 0),
+(14, 'Elias_Batres', 'EST20210001', 'cf754f5401fb166cff0d894029d81f5b', '2021-08-11 10:50:40', '2021-08-11 10:50:40', NULL, 3, NULL, 0, 4, 1, 1, 0),
+(15, 'Ingrid_Roxana', 'EST20210002', 'b3a37afac871b33fed4fdaaafa70da83', '2021-08-11 17:56:13', '2021-08-11 17:56:13', NULL, 3, NULL, 0, 5, 1, 1, 0),
+(16, 'Fredy_Benitez', 'EST20210003', 'cb9d2461150e3d2d054e437561842ef2', '2021-08-11 17:56:40', '2021-08-11 17:56:40', NULL, 3, NULL, 0, 6, 1, 1, 0),
+(17, 'Keiry_Virginia', 'EST20210004', 'fb8d293282441b7e150cb908cdda8701', '2021-08-11 17:57:39', '2021-08-11 17:57:39', NULL, 3, NULL, 0, 7, 1, 1, 0),
+(18, 'Airon_Bautista', 'EST20210005', '318c81549e198bb5fb0ef545642fac1a', '2021-08-11 18:13:02', '2021-08-11 18:13:02', NULL, 3, NULL, 0, 8, 1, 1, 0),
+(19, 'Blanca_Mendez', 'EST20210006', 'd0e9a5be7c31886679a62eb7875090f8', '2021-08-11 18:13:33', '2021-08-11 18:13:33', NULL, 3, NULL, 0, 9, 1, 1, 0),
+(20, 'Blanca_Guardado', 'EST20210007', '8e3b5cbd32b9622694b97ab8cd902b24', '2021-08-11 18:14:26', '2021-08-11 18:14:26', NULL, 3, NULL, 0, 10, 1, 1, 0),
+(21, 'Carlos_Vargas', 'EST20210008', 'b343ebf885fa59bef47663da90d075e5', '2021-08-11 18:15:26', '2021-08-11 18:15:26', NULL, 3, NULL, 0, 11, 1, 1, 0),
+(22, 'Cesar_Morales', 'EST20210009', '9a3f666a2871000d70eb76cf9cb825a7', '2021-08-11 18:16:04', '2021-08-11 18:16:04', NULL, 3, NULL, 0, 12, 1, 1, 0),
+(23, 'Cindy_Molina', 'EST20210010', '4b64e6ae5637d95b09f80265b667ee81', '2021-08-11 18:16:30', '2021-08-11 18:16:30', NULL, 3, NULL, 0, 13, 1, 1, 0),
+(24, 'Christian_Chamul', 'EST20210011', 'dff9a61757fed1edbdf08b1d796c444a', '2021-08-11 18:17:38', '2021-08-11 18:17:38', NULL, 3, NULL, 0, 14, 1, 1, 0),
+(25, 'Dilver_Yanez', 'EST20210012', '92284da8eab8c2f12dc1ae2465e77fde', '2021-08-11 18:18:11', '2021-08-11 18:18:11', NULL, 3, NULL, 0, 15, 1, 1, 0),
+(26, 'Emerson_Cartagena', 'EST20210013', '79466c04ebd513ce8df9a0ade5ab6f25', '2021-08-11 18:19:09', '2021-08-11 18:19:09', NULL, 3, NULL, 0, 16, 1, 1, 0),
+(27, 'Francisco_Mendez', 'EST20210014', '60861c594b10150825313dfac2ecc363', '2021-08-11 18:19:39', '2021-08-11 18:19:39', NULL, 3, NULL, 0, 17, 1, 1, 0),
+(28, 'Guillermo_Martinez', 'EST20210015', 'a15833c08f699f9f688db5608b84e474', '2021-08-11 18:20:15', '2021-08-11 18:20:15', NULL, 3, NULL, 0, 18, 1, 1, 0),
+(29, 'Heysel_Pereira', 'EST20210016', '32f33d39d24134466e021a9e65003b82', '2021-08-11 18:20:44', '2021-08-11 18:20:44', NULL, 3, NULL, 0, 19, 1, 1, 0),
+(30, 'Jhonatan_Hernandez', 'EST20210017', '4b585e78aa048f1491d994dc3db50393', '2021-08-11 18:21:13', '2021-08-11 18:21:13', NULL, 3, NULL, 0, 20, 1, 1, 0),
+(31, 'Josue_Barahona', 'EST20210018', '95adff0fe32a170290dbde87fa5a1fc2', '2021-08-11 18:21:44', '2021-08-11 18:21:44', NULL, 3, NULL, 0, 21, 1, 1, 0),
+(32, 'Karla_Maldonado', 'EST20210019', '3bb706d51879adf94c5e9d4e6f93890c', '2021-08-11 18:22:28', '2021-08-11 18:22:28', NULL, 3, NULL, 0, 22, 1, 1, 0),
+(33, 'Kevin_Flores', 'EST20210020', '26263d17b8c9d80940ae3c8996c459e1', '2021-08-11 18:22:51', '2021-08-11 18:22:51', NULL, 3, NULL, 0, 23, 1, 1, 0),
+(34, 'Kevin_Rodriguez', 'EST20210021', '1440b6e2238c0dfa42c71f816d0f45d6', '2021-08-11 18:24:54', '2021-08-11 18:24:54', NULL, 3, NULL, 0, 24, 1, 1, 0),
+(35, 'Manuel_Reyes', 'EST20210022', '7af89ad90508f9320cebaed6e55b4ffe', '2021-08-11 18:25:31', '2021-08-11 18:25:31', NULL, 3, NULL, 0, 25, 1, 1, 0),
+(36, 'Miguel_Perez', 'EST20210023', '5f1584a0f0a9a3c7c14f7a0005bc3688', '2021-08-11 18:25:54', '2021-08-11 18:25:54', NULL, 3, NULL, 0, 26, 1, 1, 0),
+(37, 'Oscar_Lopez', 'EST20210024', 'e9f96ca907fbef2a7704bca43166849a', '2021-08-11 18:26:23', '2021-08-11 18:26:23', NULL, 3, NULL, 0, 27, 1, 1, 0),
+(38, 'Reina_Zavala', 'EST20210025', 'ddab8e038b6e041b14638e922b9041ad', '2021-08-11 18:27:22', '2021-08-11 18:27:22', NULL, 3, NULL, 0, 28, 1, 1, 0),
+(39, 'Wilber_Perdomo', 'EST20210026', 'c13188c23f2b27958df80dae9abd2380', '2021-08-11 18:27:48', '2021-08-11 18:27:48', NULL, 3, NULL, 0, 29, 1, 1, 0),
+(40, 'Emerson_Cartagena', 'Emerson_Cartagena', '3c923a682d7c1cdca089fb52b23eb0f0', '2021-08-11 18:29:25', '2021-08-11 18:29:25', NULL, 2, 6, 0, 0, 0, 1, 0),
+(41, 'Estela_Fuentez', 'DOC20210006', '9024fd55fe8a9587ee49b371ff2d93bd', '2021-08-16 12:35:45', '2021-08-16 17:50:00', NULL, 2, 7, 0, 0, 1, 1, 0),
+(42, 'Administrador 2', 'admin2', 'c84258e9c39059a89ab77d846ddab909', '2021-08-16 17:55:20', '2021-08-16 17:55:20', NULL, 1, NULL, 0, NULL, 1, 1, 0),
+(43, 'Cristian_Pineda', 'EST20210027', '59e17d8eb6d0204e060102c9e2680ca2', '2021-08-16 19:08:24', '2021-08-16 19:08:24', NULL, 3, NULL, 0, 30, 1, 1, 0),
+(44, 'Armando_Campos', 'DOC20210007', '827ccb0eea8a706c4c34a16891f84e7b', '2021-08-27 19:43:53', '2021-08-27 19:43:53', NULL, 2, 8, 0, 0, 1, 1, 0),
+(45, 'Luis_Guevara', 'EST20210028', '3bc9135a76a1afbfd7e829a3bb025cbe', '2021-08-27 19:51:08', '2021-08-27 19:51:08', NULL, 3, NULL, 0, 31, 1, 1, 0),
+(46, 'Antonio Juarez', 'EST20210029', 'e24ed772e7d723800bf5e736e0bf9243', '2021-08-29 08:17:44', '2021-08-29 08:17:44', NULL, 3, NULL, 0, 32, 1, 1, 0),
+(47, 'Fredy Mauricio Benitez Orellana', 'Fredy_Benitez_6', '25f9e794323b453885f5181f1b624d0b', '2021-10-01 19:29:05', '2021-10-01 19:29:05', NULL, 3, 6, 0, 0, 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1097,6 +1172,12 @@ INSERT INTO `tblusuario_modulo` (`id_modulo_usuario`, `id_modulo`, `id_usuario`,
 --
 
 --
+-- Indices de la tabla `tblcanje_oferta`
+--
+ALTER TABLE `tblcanje_oferta`
+  ADD PRIMARY KEY (`id_canje_oferta`);
+
+--
 -- Indices de la tabla `tblcliente`
 --
 ALTER TABLE `tblcliente`
@@ -1125,6 +1206,12 @@ ALTER TABLE `tblcompra_general`
 --
 ALTER TABLE `tbldepartamento`
   ADD PRIMARY KEY (`id_departamento`);
+
+--
+-- Indices de la tabla `tbldependiente`
+--
+ALTER TABLE `tbldependiente`
+  ADD PRIMARY KEY (`id_dependiente`);
 
 --
 -- Indices de la tabla `tbldocente`
@@ -1221,6 +1308,12 @@ ALTER TABLE `tblusuario_modulo`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `tblcanje_oferta`
+--
+ALTER TABLE `tblcanje_oferta`
+  MODIFY `id_canje_oferta` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `tblcliente`
 --
 ALTER TABLE `tblcliente`
@@ -1249,6 +1342,12 @@ ALTER TABLE `tblcompra_general`
 --
 ALTER TABLE `tbldepartamento`
   MODIFY `id_departamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT de la tabla `tbldependiente`
+--
+ALTER TABLE `tbldependiente`
+  MODIFY `id_dependiente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `tbldocente`
@@ -1284,13 +1383,13 @@ ALTER TABLE `tblhistorial_justificaciones`
 -- AUTO_INCREMENT de la tabla `tblmenu`
 --
 ALTER TABLE `tblmenu`
-  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de la tabla `tblmodulo`
 --
 ALTER TABLE `tblmodulo`
-  MODIFY `id_modulo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `id_modulo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
 -- AUTO_INCREMENT de la tabla `tblmunicipio`
@@ -1302,7 +1401,7 @@ ALTER TABLE `tblmunicipio`
 -- AUTO_INCREMENT de la tabla `tbloferta`
 --
 ALTER TABLE `tbloferta`
-  MODIFY `id_oferta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_oferta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `tblpais`
@@ -1332,7 +1431,7 @@ ALTER TABLE `tbltipo_usuario`
 -- AUTO_INCREMENT de la tabla `tblusuario`
 --
 ALTER TABLE `tblusuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT de la tabla `tblusuario_modulo`

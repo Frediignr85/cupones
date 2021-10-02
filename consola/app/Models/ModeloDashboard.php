@@ -22,18 +22,17 @@ class ModeloDashboard extends Model
         if($admin=='1')
         {
             $retorno.="<li class='active'>";
-            $retorno.="<a href='dashboard.php'><i class='".$icono."'></i> <span class='nav-label'>Inicio</span></a>";
+            $retorno.="<a href='".base_url("/dashboard")."'><i class='".$icono."'></i> <span class='nav-label'>Inicio</span></a>";
             $retorno.="</li>";
         }
         else
         {
             $retorno.="<li class='active'>";
-            $retorno.="<a href='dashboard.php'><i class='".$icono."'></i> <span class='nav-label'>Inicio</span></a>";
+            $retorno.="<a href='".base_url("/dashboard")."'><i class='".$icono."'></i> <span class='nav-label'>Inicio</span></a>";
             $retorno.="</li>";
         }
         if(count($data->getResult()) > 0){
             foreach ($data->getResult('array') as $value) {
-                
                 $menuname=$value['nombre'];
                 $id_menu=$value['id_menu'];
                 $icono=$value['icono'];
@@ -63,10 +62,12 @@ class ModeloDashboard extends Model
                     AND tblmodulo.mostrar_menu='1'
                     AND tblusuario_modulo.deleted_at is NULL";
                 }
+                //$retorno.=$sql_links;
                 $data2 = $this->db->query($sql_links);
-                $retorno.="<li><a href='".$main_lnk."' class='".strtolower(($menuname))."'><i class='".$icono."'></i><span class='nav-label'>".$menuname."</span> <span class='fa arrow'></span></a>";
-                $retorno.=" <ul class='nav nav-second-level'>";
+               
                 if(count($data2->getResult()) > 0){
+                    $retorno.="<li><a href='".$main_lnk."' class='".strtolower(($menuname))."'><i class='".$icono."'></i><span class='nav-label'>".$menuname."</span> <span class='fa arrow'></span></a>";
+                    $retorno.=" <ul class='nav nav-second-level'>";
                     foreach ($data2->getResult('array') as $value){
                         $lnk=strtolower($value['filename']);
                         if($lnk == "<hoja_membretada>")
