@@ -5,6 +5,7 @@ use App\Models\ModeloEmpresa;
 use App\Models\ModeloDashboard;
 use Config\App;
 use \Hermawan\DataTables\DataTable;
+header('Access-Control-Allow-Origin: *');
 class Empresa extends BaseController
 {
     function __construct()

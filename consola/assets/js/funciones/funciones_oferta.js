@@ -21,9 +21,6 @@ $(document).ready(function() {
             precio_oferta: {
                 required: true,
             },
-            cantidad: {
-                required: true,
-            },
             fecha_inicio: {
                 required: true,
             },
@@ -47,9 +44,6 @@ $(document).ready(function() {
             precio_oferta: {
                 required: "Por favor ingrese el precio ofertado de la oferta.",
             },
-            cantidad: {
-                required: "Por favor ingrese la cantidad de cupones limite.",
-            },
             fecha_inicio: {
                 required: "Por favor ingrese la fecha de inicio de la oferta.",
             },
@@ -64,6 +58,15 @@ $(document).ready(function() {
             senddata();
         }
     });
+
+    $('#limite').on('ifChecked', function(event) {
+        $('#activo').val("1");
+    });
+    $('#limite').on('ifUnchecked', function(event) {
+        $('#activo').val("0");
+    });
+
+
 });
 $(function() {
     $(document).on("click", "#btnDelete", function(event) {
@@ -82,6 +85,7 @@ $(function() {
         var target = $(e.target);
         target.removeData('bs.modal').find(".modal-content").html('');
     });
+
 });
 
 function senddata() {
@@ -95,28 +99,30 @@ function senddata() {
     var fecha_fin = $("#fecha_fin").val();
     var fecha_limite = $("#fecha_limite").val();
     var detalles = $("#detalles").val();
+    var sin_limite = $('#activo').val();
     //Get the value from form if edit or insert
     var process = $('#process').val();
     if (process == 'insert') {
         var id_oferta = 0;
         var urlprocess = base_url + '/ofertas/insertar_oferta';
-        var dataString = 'process=' + process + '&titulo=' + titulo + '&descripcion=' + descripcion + "&precio_regular=" + precio_regular + "&precio_oferta=" + precio_oferta + "&cantidad=" + cantidad + "&fecha_inicio=" + fecha_inicio + "&fecha_fin=" + fecha_fin + "&fecha_limite=" + fecha_limite + "&detalles=" + detalles;
+        var dataString = 'process=' + process + '&titulo=' + titulo + '&descripcion=' + descripcion + "&precio_regular=" + precio_regular + "&precio_oferta=" + precio_oferta + "&cantidad=" + cantidad + "&fecha_inicio=" + fecha_inicio + "&fecha_fin=" + fecha_fin + "&fecha_limite=" + fecha_limite + "&detalles=" + detalles + "&sin_limite=" + sin_limite;
     }
     if (process == 'edited') {
         var id_oferta = $('#id_oferta').val();
         var urlprocess = base_url + '/ofertas/modificar_oferta';
-        var dataString = 'process=' + process + '&titulo=' + titulo + '&descripcion=' + descripcion + '&id_oferta=' + id_oferta + "&precio_regular=" + precio_regular + "&precio_oferta=" + precio_oferta + "&cantidad=" + cantidad + "&fecha_inicio=" + fecha_inicio + "&fecha_fin=" + fecha_fin + "&fecha_limite=" + fecha_limite + "&detalles=" + detalles;
+        var dataString = 'process=' + process + '&titulo=' + titulo + '&descripcion=' + descripcion + '&id_oferta=' + id_oferta + "&precio_regular=" + precio_regular + "&precio_oferta=" + precio_oferta + "&cantidad=" + cantidad + "&fecha_inicio=" + fecha_inicio + "&fecha_fin=" + fecha_fin + "&fecha_limite=" + fecha_limite + "&detalles=" + detalles + "&sin_limite=" + sin_limite;
     }
     $.ajax({
         type: 'POST',
         url: urlprocess,
         data: dataString,
         dataType: 'json',
+        async: false,
         success: function(datax) {
             process = datax.process;
             display_notify(datax.typeinfo, datax.msg);
             if (datax.typeinfo == "Success") {
-                setInterval("reload1();", 1500);
+                $("#send_form").click();
             }
         }
     });

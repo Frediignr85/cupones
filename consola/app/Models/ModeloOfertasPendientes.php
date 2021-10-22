@@ -40,11 +40,11 @@ class ModeloOfertasPendientes extends Model
     function verificar_permiso($id_user, $filename){
         $sql1="SELECT tblmenu.id_menu, tblmenu.nombre as nombremenu, tblmenu.prioridad,
             tblmodulo.id_modulo,  tblmodulo.nombre as nombremodulo, tblmodulo.descripcion, tblmodulo.filename,
-            tblusuario_modulo.id_usuario,tblUsuario.id_tipo_usuario as admin
-            FROM tblmenu, tblmodulo, tblusuario_modulo, tblUsuario
-            WHERE tblUsuario.id_usuario='$id_user'
+            tblusuario_modulo.id_usuario,tblusuario.id_tipo_usuario as admin
+            FROM tblmenu, tblmodulo, tblusuario_modulo, tblusuario
+            WHERE tblusuario.id_usuario='$id_user'
             AND tblmenu.id_menu=tblmodulo.id_menu_MOD
-            AND tblUsuario.id_usuario=tblusuario_modulo.id_usuario
+            AND tblusuario.id_usuario=tblusuario_modulo.id_usuario
             AND tblusuario_modulo.id_modulo=tblmodulo.id_modulo
             AND tblmodulo.filename='$filename'
             AND tblusuario_modulo.deleted_at is NULL";

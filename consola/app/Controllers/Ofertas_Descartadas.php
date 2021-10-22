@@ -5,6 +5,7 @@ use App\Models\ModeloOfertasDescartadas;
 use App\Models\ModeloDashboard;
 use Config\App;
 use \Hermawan\DataTables\DataTable;
+header('Access-Control-Allow-Origin: *');
 class Ofertas_Descartadas extends BaseController
 {
     function __construct()
@@ -67,4 +68,6 @@ class Ofertas_Descartadas extends BaseController
            
         }
     }
+
+    
 }

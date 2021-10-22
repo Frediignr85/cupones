@@ -33,7 +33,7 @@
                     <span class="m-r-sm text-muted welcome-message"><b>Bienvenid@</b> <b><?php echo $_SESSION["nombre"] ?> </b></span>
                 </li>
                 <li>
-                    <a data-toggle='modal' href='cambiar_pass.php' data-target='#viewModalpw' data-refresh='true'>
+                <a data-toggle='modal' href="<?php echo base_url("/password") ?>" data-target='#viewModalpw' data-refresh='true'>
                         <i class="fa fa-lock"></i> Contraseña
                     </a>
                 </li>

@@ -5,6 +5,7 @@ use App\Models\ModeloOfertasRechazadas;
 use App\Models\ModeloDashboard;
 use Config\App;
 use \Hermawan\DataTables\DataTable;
+header('Access-Control-Allow-Origin: *');
 class Ofertas_Rechazadas extends BaseController
 {
     function __construct()

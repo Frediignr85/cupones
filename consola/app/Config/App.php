@@ -23,7 +23,7 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public $baseURL = 'http://localhost/proyecto_mod5/consola/';
+    public $baseURL = 'https://www.cupones.web-uis.com/consola/';
 
     /**
      * --------------------------------------------------------------------------

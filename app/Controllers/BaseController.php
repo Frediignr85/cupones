@@ -19,6 +19,7 @@ use Psr\Log\LoggerInterface;
  *
  * For security be sure to declare any new methods as protected or private.
  */
+header('Access-Control-Allow-Origin: *');
 class BaseController extends Controller
 {
     /**
@@ -35,7 +36,7 @@ class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = [];
+    protected $helpers = ['url', 'file', 'utilidades'];
 
     /**
      * Constructor.
@@ -45,6 +46,7 @@ class BaseController extends Controller
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
 
+        helper('utilidades'); 
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = \Config\Services::session();

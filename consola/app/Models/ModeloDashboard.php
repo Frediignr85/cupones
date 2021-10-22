@@ -13,6 +13,11 @@ class ModeloDashboard extends Model
 
 
     function menu($id_user,$admin){
+        $data = $this->db->query("UPDATE tbloferta SET id_estado = '3' WHERE CURDATE() >= fecha_inicio AND id_estado = 2");
+        $data = $this->db->query("UPDATE tbloferta SET id_estado = '4' WHERE CURDATE() > fecha_fin AND id_estado = 3");
+
+
+        
         helper('utilidades'); 
         $retorno = "";
         $icono='fa fa-star-o';
@@ -69,7 +74,7 @@ class ModeloDashboard extends Model
                     $retorno.="<li><a href='".$main_lnk."' class='".strtolower(($menuname))."'><i class='".$icono."'></i><span class='nav-label'>".$menuname."</span> <span class='fa arrow'></span></a>";
                     $retorno.=" <ul class='nav nav-second-level'>";
                     foreach ($data2->getResult('array') as $value){
-                        $lnk=strtolower($value['filename']);
+                        $lnk=($value['filename']);
                         if($lnk == "<hoja_membretada>")
                         {
                             $extra = "target='_blank'";
@@ -90,7 +95,59 @@ class ModeloDashboard extends Model
         }
         return $retorno;
     }
-  
+
+    function traer_clientes(){
+        $data = $this->db->query("SELECT * FROM tblcliente WHERE  deleted_at is NULL");
+        return $data;
+    }
+    function traer_empresas(){
+        $data = $this->db->query("SELECT * FROM tblempresa_ofertante WHERE deleted_at is NULL");
+        return $data;
+    }
+    function traer_rubros(){
+        $data = $this->db->query("SELECT * FROM tblrubro WHERE deleted_at is NULL");
+        return $data;
+    }
+    function traer_dependientes(){
+        $data = $this->db->query("SELECT * FROM tbldependiente WHERE deleted_at is NULL");
+        return $data;
+    }
+    function traer_ofertas_pendientes($admin,$id_empresa){
+        if($admin){
+            $data = $this->db->query("SELECT * FROM tbloferta WHERE deleted_at is NULL AND id_estado = '1'");
+        }
+        else{
+            $data = $this->db->query("SELECT * FROM tbloferta WHERE deleted_at is NULL AND id_estado = '1' AND id_empresa = '$id_empresa'");
+        }
+        return $data;
+    }
+    function traer_ofertas_activas($admin,$id_empresa){
+        if($admin){
+            $data = $this->db->query("SELECT * FROM tbloferta WHERE deleted_at is NULL AND id_estado = '3'");
+        }
+        else{
+            $data = $this->db->query("SELECT * FROM tbloferta WHERE deleted_at is NULL AND id_estado = '3' AND id_empresa = '$id_empresa'");
+        }
+        return $data;
+    }
+    function traer_ofertas_pasadas($admin,$id_empresa){
+        if($admin){
+            $data = $this->db->query("SELECT * FROM tbloferta WHERE deleted_at is NULL AND id_estado = '4'");
+        }
+        else{
+            $data = $this->db->query("SELECT * FROM tbloferta WHERE deleted_at is NULL AND id_estado = '4' AND id_empresa = '$id_empresa'");
+        }
+        return $data;
+    }
+    function traer_ofertas_rechazadas($admin,$id_empresa){
+        if($admin){
+            $data = $this->db->query("SELECT * FROM tbloferta WHERE deleted_at is NULL AND id_estado = '5'");
+        }
+        else{
+            $data = $this->db->query("SELECT * FROM tbloferta WHERE deleted_at is NULL AND id_estado = '5' AND id_empresa = '$id_empresa'");
+        }
+        return $data;
+    }
 }
 
 ?>

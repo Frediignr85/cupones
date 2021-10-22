@@ -33,9 +33,9 @@ class Database extends Config
     public $default = [
         'DSN'      => '',
         'hostname' => 'localhost',
-        'username' => 'root',
-        'password' => '',
-        'database' => 'cupones',
+        'username' => 'u648437711_cupones',
+        'password' => 'Cupones123',
+        'database' => 'u648437711_cupones',
         'DBDriver' => 'MySQLi',
         'DBPrefix' => '',
         'pConnect' => false,

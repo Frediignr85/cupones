@@ -34,6 +34,9 @@
                             name="password">
                     </div>
                     <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
+                    <br>
+                    <p class="social-text">¿O has olvivado tu contraseña?</p>
+					<a href="recuperar">Recuperar Contraseña</a>
                 </form>
             </div>
         </div>

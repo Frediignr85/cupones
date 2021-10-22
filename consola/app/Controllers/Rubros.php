@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Models\ModeloRubro;
 use App\Models\ModeloDashboard;
 use Config\App;
+header('Access-Control-Allow-Origin: *');
 class Rubros extends BaseController
 {
     function __construct()

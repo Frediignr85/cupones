@@ -1,12 +1,25 @@
+$(function() {
+    $(document).on("click", "#btnCanjearOferta", function(event) {
+        let codigo_cupon = $("#codigo_cupon_canje").val();
+        canje_cupon(codigo_cupon);
+    });
+    $(document).on("click", "#btnLimpiarOferta", function(event) {
+        $("#contenedor_caja2").html("");
+        $("#codigo_canje").val("");
+    });
+});
+
 $(document).ready(function() {
     grafica1();
     grafica2();
     grafica3();
+    grafica4();
 });
 
 function grafica1() {
+    let base_url = $("#base_url").val();
     $.ajax({
-        url: "grafica.php",
+        url: base_url + "/dashboard/grafica1",
         method: "POST",
         success: function(data) {
             var producto = [];
@@ -24,7 +37,7 @@ function grafica1() {
                     type: 'column'
                 },
                 title: {
-                    text: 'EVALUACIONES REALIZADAS POR MES'
+                    text: 'COMPRAS REALIZADAS POR MES'
                 },
                 accessibility: {
                     announceNewData: {
@@ -36,7 +49,7 @@ function grafica1() {
                 },
                 yAxis: {
                     title: {
-                        text: 'CANTIDAD DE EVALUACIONES'
+                        text: 'TOTAL DE COMPRAS'
                     }
                 },
                 legend: {
@@ -53,7 +66,7 @@ function grafica1() {
                 },
                 tooltip: {
                     headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f} ($)</b> DE TOTAL<br/>'
                 },
                 series: sales,
             });
@@ -65,8 +78,9 @@ function grafica1() {
 }
 
 function grafica2() {
+    let base_url = $("#base_url").val();
     $.ajax({
-        url: "grafica1.php",
+        url: base_url + "/dashboard/grafica2",
         method: "POST",
         success: function(data) {
             var producto = [];
@@ -84,7 +98,7 @@ function grafica2() {
                     type: 'column'
                 },
                 title: {
-                    text: 'CURSOS CON MAS EVALUACIONES'
+                    text: 'UTILIDADES GENERADAS POR MES'
                 },
                 accessibility: {
                     announceNewData: {
@@ -96,7 +110,7 @@ function grafica2() {
                 },
                 yAxis: {
                     title: {
-                        text: 'CANTIDAD DE EVALUACIONES'
+                        text: 'UTILIDADES'
                     }
                 },
                 legend: {
@@ -113,7 +127,7 @@ function grafica2() {
                 },
                 tooltip: {
                     headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}($)</b> DE TOTAL<br/>'
                 },
                 series: sales,
             });
@@ -124,9 +138,11 @@ function grafica2() {
     });
 }
 
+
 function grafica3() {
+    let base_url = $("#base_url").val();
     $.ajax({
-        url: "grafica2.php",
+        url: base_url + "/dashboard/grafica3",
         method: "POST",
         success: function(data) {
             var producto = [];
@@ -141,10 +157,10 @@ function grafica3() {
             }
             Highcharts.chart('container3', {
                 chart: {
-                    type: 'bar'
+                    type: 'column'
                 },
                 title: {
-                    text: 'CURSOS CON MEJOR PROMEDIO DE NOTAS'
+                    text: 'INGRESOS POR MES'
                 },
                 accessibility: {
                     announceNewData: {
@@ -156,7 +172,7 @@ function grafica3() {
                 },
                 yAxis: {
                     title: {
-                        text: 'NOTAS PROMEDIO'
+                        text: 'TOTAL DE INGRESOS'
                     }
                 },
                 legend: {
@@ -173,7 +189,7 @@ function grafica3() {
                 },
                 tooltip: {
                     headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f} ($)</b> DE TOTAL<br/>'
                 },
                 series: sales,
             });
@@ -183,6 +199,70 @@ function grafica3() {
         }
     });
 }
+
+function grafica4() {
+    let base_url = $("#base_url").val();
+    $.ajax({
+        url: base_url + "/dashboard/grafica4",
+        method: "POST",
+        success: function(data) {
+            var producto = [];
+            var total = [];
+            var obj = jQuery.parseJSON(data);
+            var sales = [];
+            for (var i in obj) {
+                producto.push(obj[i].producto);
+                total.push(obj[i].total);
+                var json = { "name": (obj[i].producto), "data": [parseFloat(obj[i].total)] }
+                sales.push(json);
+            }
+            Highcharts.chart('container4', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'INGRESOS MENOS COMISION GENERADOS POR MES'
+                },
+                accessibility: {
+                    announceNewData: {
+                        enabled: true
+                    }
+                },
+                xAxis: {
+                    categories: producto,
+                },
+                yAxis: {
+                    title: {
+                        text: 'TOTAL DE INGRESOS MENOS COMISION'
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y:.1f}'
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}($)</b> DE TOTAL<br/>'
+                },
+                series: sales,
+            });
+        },
+        error: function(data) {
+            console.log(data);
+        }
+    });
+}
+
+
+
 
 function ir_al_curso(id_curso) {
     window.location = 'ver_curso.php?id_curso=' + id_curso;
@@ -209,11 +289,29 @@ $("#btn_verificar_codigo").click(function() {
         success: function(datax) {
             display_notify(datax.typeinfo, datax.msg);
             if (datax.typeinfo == "Success") {
-                setInterval("reload1();", 1500);
+                $("#contenedor_caja2").html(datax.contenido);
             }
         }
     });
 });
+
+function canje_cupon(codigo_cupon) {
+    let base_url = $("#base_url").val();
+    var dataString = 'codigo=' + codigo_cupon;
+    $.ajax({
+        type: "POST",
+        url: base_url + "/ofertas/canje_cupon",
+        data: dataString,
+        dataType: 'json',
+        success: function(datax) {
+            display_notify(datax.typeinfo, datax.msg);
+            if (datax.typeinfo == "Success") {
+                $("#contenedor_caja2").html("");
+                $("#codigo_canje").val("");
+            }
+        }
+    });
+}
 
 function reload1() {
     let base_url = $("#base_url").val();

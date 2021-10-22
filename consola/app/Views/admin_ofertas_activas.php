@@ -33,18 +33,23 @@
                                         $nombre = $value['nombre'];
                                         $titulo_oferta = $value['titulo_oferta'];
                                         $cantidad_limite_cupones = $value['cantidad_limite_cupones'];
-                                        $cantidad_cupones_vendidos = $value['cantidad_cupones_vendidos'];
-                                        $precio_regular = $value['precio_regular'];
-                                        $precio_oferta = $value['precio_oferta'];
+                                        $ilimitar = $value['ilimitado'];
+                                        $cantidad_cupones = $cantidad_limite_cupones;
+                                        if($ilimitar){
+                                            $cantidad_cupones = "Ilimitados";
+                                        }
+                                        $cantidad_cupones_vendidos = number_format($value['cantidad_cupones_vendidos'],0);
+                                        $precio_regular = "$".number_format($value['precio_regular'],2);
+                                        $precio_oferta = "$".number_format($value['precio_oferta'],2);
                                         $fecha_fin = $value['fecha_fin'];
-                                        $comision = $value['comision'];
-                                        $ingresos_totales = $value['ingresos_totales'];
-                                        $comision_total = $value['comision_total'];
+                                        $comision = "$".number_format($value['comision'],2);
+                                        $ingresos_totales = "$".number_format($value['ingresos_totales'],2);
+                                        $comision_total = "$".number_format($value['comision_total'],2);
                                         echo "<tr>";
                                         echo "<td>$id_oferta</td>";
                                         echo "<td>$nombre</td>";
                                         echo "<td>$titulo_oferta</td>";
-                                        echo "<td>$cantidad_limite_cupones</td>";
+                                        echo "<td>$cantidad_cupones</td>";
                                         echo "<td>$cantidad_cupones_vendidos</td>";
                                         echo "<td>$precio_regular</td>";
                                         echo "<td>$precio_oferta</td>";

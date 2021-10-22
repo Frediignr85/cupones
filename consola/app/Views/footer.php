@@ -61,7 +61,8 @@
 <script src="<?php echo base_url() ?>/assets/js/plugins/timepicki/timepicki.js"></script>
 <?php echo $url; ?>
 <input type="hidden" name="base_url" id="base_url"  value="<?php echo base_url(); ?>">
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 
 </body>

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 use App\Models\ModeloLogin;
 use App\Models\ModeloDashboard;
+header('Access-Control-Allow-Origin: *');
 class Login extends BaseController
 {
     function __construct()
@@ -28,8 +29,9 @@ class Login extends BaseController
             $datos['result'] = $query->getResultArray();
             echo view('header',$datos1);
             echo view('login',$datos);
-            
-            $datos3['url'] = '<script src="'.base_url("").'/assets/js/funciones/funciones_login.js" ></script>';
+            $a = rand(1,9999);
+		    $src = base_url("/assets/js/funciones/funciones_login.js?t".$a."=".$a);
+            $datos3['url'] = '<script src="'.$src.'" ></script>';
             echo view('footer',$datos3);
         }
         else{
@@ -98,6 +100,7 @@ class Login extends BaseController
                     'activo' => $activo,
                     'id_sucursal' => $id_sucursal,
                     'admin' => $admin,
+                    'id_empresa' => $id_empresa
                 ];
                 $session = session();
                 $session->set($user_session);
@@ -112,6 +115,7 @@ class Login extends BaseController
                 $_SESSION['id_sucursal'] = $id_sucursal;
                 $_SESSION['admin'] = $admin;
                 $_SESSION['id_empresa'] = $id_empresa;
+                
                 $xdatos['typeinfo'] ="Success";
                 $xdatos['msg'] = "Bienvenido $nombre!";
             }
@@ -126,4 +130,5 @@ class Login extends BaseController
         }
         echo json_encode($xdatos);
     }
+    
 }

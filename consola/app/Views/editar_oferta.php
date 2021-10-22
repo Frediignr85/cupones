@@ -32,10 +32,10 @@
                                 <input type="text" placeholder="Ingrese el precio en oferta" class="form-control precios"
                                     id="precio_oferta" name="precio_oferta" required value="<?php echo $precio_oferta; ?>">
                             </div>
-                            <div class="form-group col-lg-4">
+                            <div class="form-group col-lg-2">
                                 <label>Cantidad Limite de Cupones:</label>
                                 <input type="text" placeholder="Ingrese la cantidad limite de cupones" class="form-control"
-                                    id="cantidad" name="cantidad" required value="<?php echo $cantidad_limite_cupones; ?>">
+                                    id="cantidad" name="cantidad" value="<?php echo $cantidad_limite_cupones; ?>">
                             </div>
                         </div>
                         <div class="row">
@@ -53,6 +53,14 @@
                                 <label>Fecha Limite:</label>
                                 <input type="text" placeholder="Ingrese la fecha limite de canje" class="form-control datepicker"
                                     id="fecha_limite" name="fecha_limite" required value="<?php echo $fecha_limite; ?>">
+                            </div>
+                            <div class="form-group col-lg-2" >
+                                <div class='checkbox i-checks'><br>
+                                    <label id='frentex'>
+                                        <input type='checkbox' id='limite' name='limite' <?php if($ilimitado == 1) echo " checked "; ?> > <strong> ¿Sin Limite?</strong>
+                                    </label>
+                                </div>
+                                <input type='hidden' id='activo' name='activo' <?php if($ilimitado == 1) echo " value='1' "; else echo " value='0' "; ?> >
                             </div>
                         </div>
                         <div class="row">

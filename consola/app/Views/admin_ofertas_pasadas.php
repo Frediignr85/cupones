@@ -27,49 +27,49 @@
                             </thead>
                             <tbody>
                             <?php
-                                    foreach ($result as $key => $value) {
-                                        $id_empresa = $value['id_empresa'];
-                                        $id_oferta = $value['id_oferta'];
-                                        $nombre = $value['nombre'];
-                                        $titulo_oferta = $value['titulo_oferta'];
-                                        $cantidad_cupones_vendidos = $value['cantidad_cupones_vendidos'];
-                                        $cupones_canjeados = $value['cupones_canjeados'];
-                                        if($cupones_canjeados == ""){
-                                            $cupones_canjeados = 0;
-                                        }
-                                        $precio_regular = $value['precio_regular'];
-                                        $precio_oferta = $value['precio_oferta'];
-                                        $fecha_limite = $value['fecha_limite'];
-                                        $comision = $value['comision'];
-                                        $ingresos_totales = $value['ingresos_totales'];
-                                        $comision_total = $value['comision_total'];
-                                        echo "<tr>";
-                                        echo "<td>$id_oferta</td>";
-                                        echo "<td>$nombre</td>";
-                                        echo "<td>$titulo_oferta</td>";
-                                        echo "<td>$cantidad_cupones_vendidos</td>";
-                                        echo "<td>$cupones_canjeados</td>";
-                                        echo "<td>$precio_regular</td>";
-                                        echo "<td>$precio_oferta</td>";
-                                        echo "<td>$fecha_limite</td>";
-                                        echo "<td>$comision</td>";
-                                        echo "<td>$ingresos_totales</td>";
-                                        echo "<td>$comision_total</td>";
-                                        $boton = "<td><div class=\"btn-group\">
-                                        <a href=\"#\" data-toggle=\"dropdown\" class=\"btn btn-primary dropdown-toggle\"><i class=\"fa fa-user icon-white\"></i> Menu<span class=\"caret\"></span></a>
-                                        <ul class=\"dropdown-menu dropdown-primary\">";
-                                            if($permiso_ver){
-                                                $filename = base_url("ofertas/ver/");
-                                                $boton .= "<li><a data-toggle='modal' href='" . $filename."?id_oferta=".$id_oferta. "' data-target='#deleteModal' data-refresh='true'><i class=\"fa fa-eye\"></i> Ver</a></li>";
-                                            }
-                                            
-                                            $boton .= "	</ul>
-                                                </div>
-                                                </td>";
-                                        echo $boton;
-                                        echo "</tr>";
+                                foreach ($result as $key => $value) {
+                                    $id_empresa = $value['id_empresa'];
+                                    $id_oferta = $value['id_oferta'];
+                                    $nombre = $value['nombre'];
+                                    $titulo_oferta = $value['titulo_oferta'];
+                                    $cantidad_cupones_vendidos = $value['cantidad_cupones_vendidos'];
+                                    $cupones_canjeados = $value['cupones_canjeados'];
+                                    if($cupones_canjeados == ""){
+                                        $cupones_canjeados = 0;
                                     }
-                                ?>
+                                    $precio_regular = "$".number_format($value['precio_regular'],2);
+                                    $precio_oferta = "$".number_format($value['precio_oferta'],2);
+                                    $fecha_limite = $value['fecha_limite'];
+                                    $comision = "$".number_format($value['comision'],2);
+                                    $ingresos_totales = "$".number_format($value['ingresos_totales'],2);
+                                    $comision_total = "$".number_format($value['comision_total'],2);
+                                    echo "<tr>";
+                                    echo "<td>$id_oferta</td>";
+                                    echo "<td>$nombre</td>";
+                                    echo "<td>$titulo_oferta</td>";
+                                    echo "<td>$cantidad_cupones_vendidos</td>";
+                                    echo "<td>$cupones_canjeados</td>";
+                                    echo "<td>$precio_regular</td>";
+                                    echo "<td>$precio_oferta</td>";
+                                    echo "<td>$fecha_limite</td>";
+                                    echo "<td>$comision</td>";
+                                    echo "<td>$ingresos_totales</td>";
+                                    echo "<td>$comision_total</td>";
+                                    $boton = "<td><div class=\"btn-group\">
+                                    <a href=\"#\" data-toggle=\"dropdown\" class=\"btn btn-primary dropdown-toggle\"><i class=\"fa fa-user icon-white\"></i> Menu<span class=\"caret\"></span></a>
+                                    <ul class=\"dropdown-menu dropdown-primary\">";
+                                        if($permiso_ver){
+                                            $filename = base_url("ofertas/ver/");
+                                            $boton .= "<li><a data-toggle='modal' href='" . $filename."?id_oferta=".$id_oferta. "' data-target='#deleteModal' data-refresh='true'><i class=\"fa fa-eye\"></i> Ver</a></li>";
+                                        }
+                                        
+                                        $boton .= "	</ul>
+                                            </div>
+                                            </td>";
+                                    echo $boton;
+                                    echo "</tr>";
+                                }
+                            ?>
                             </tbody>
                         </table>
                         <input type="hidden" name="autosave" id="autosave" value="false-0">
